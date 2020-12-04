@@ -10,7 +10,7 @@ export default function App() {
   return (
     <View style={styles.container}>
 
-          <Image style={styles.image} source={require("./assets/greenBattery.png")} />
+          <Image style={styles.image} source={require("./src/assets/greenBattery.png")} />
 
           <KeyboardAvoidingView
               style={styles.inputView}
