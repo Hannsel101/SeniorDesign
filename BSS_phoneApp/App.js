@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Platform, Text, View, Image, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 
 export default function App() {
 
@@ -12,19 +12,21 @@ export default function App() {
 
           <Image style={styles.image} source={require("./assets/greenBattery.png")} />
 
-          <View style={styles.inputView}>
+          <KeyboardAvoidingView
+              style={styles.inputView}
+              behavior={Platform.OS == "android" ? "height" : "padding"}>
               <TextInput
                   style={styles.TextInput}
-                  placeholder="Email..."
+                  placeholder="Input Email"
                   placeholderTextColor="#003f5c"
-                  on1ChangeText={(email) => setEmail(email)}
+                  onChangeText={(email) => setEmail(email)}
               />
-          </View>
+          </KeyboardAvoidingView>
 
           <View style={styles.inputView}>
               <TextInput
                   style={styles.TextInput}
-                  placeholder="Password..."
+                  placeholder="Input Password"
                   placeholderTextColor="#003f5c"
                   secureTextEntry={true}
                   onChangeText={(password) => setPassword(password)}
@@ -65,16 +67,15 @@ const styles = StyleSheet.create({
     inputView: {
         backgroundColor: "#FFC0CB",
         borderRadius: 30,
-        width: "65%",
         height: 45,
+        width: "65%",
         marginBottom: 10,
-        alignItems: "center",
+        alignItems: "flex-start",
     },
 
     TextInput: {
-        height: 50,
-        flex: 1,
-        marginLeft: 20,
+        height: 45,
+        marginLeft: 30,
     },
 
     forgot_button: {
@@ -95,6 +96,7 @@ const styles = StyleSheet.create({
     },
 
     loginText: {
-        
+        color: "white",
+        fontWeight: 'bold',
     }
 });
