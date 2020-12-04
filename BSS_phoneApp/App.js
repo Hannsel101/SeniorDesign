@@ -17,7 +17,7 @@ export default function App() {
               behavior={Platform.OS == "android" ? "height" : "padding"}>
               <TextInput
                   style={styles.TextInput}
-                  placeholder="Input Email"
+                  placeholder="Input Emails"
                   placeholderTextColor="#003f5c"
                   onChangeText={(email) => setEmail(email)}
               />
