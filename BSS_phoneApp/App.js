@@ -10,6 +10,7 @@ export default function App() {
   return (
     <View style={styles.container}>
 
+          <Image style={styles.title} source={require("./src/assets/appTitle.png")} />
           <Image style={styles.image} source={require("./src/assets/greenBattery.png")} />
 
           <KeyboardAvoidingView
@@ -17,7 +18,7 @@ export default function App() {
               behavior={Platform.OS == "android" ? "height" : "padding"}>
               <TextInput
                   style={styles.TextInput}
-                  placeholder="Input Emails"
+                  placeholder="Input Email"
                   placeholderTextColor="#003f5c"
                   onChangeText={(email) => setEmail(email)}
               />
@@ -54,11 +55,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     },
 
-    image: {
+    title: {
         flex: 1,
-        marginBottom: 40,
+        marginBottom: 0,
         marginTop: 25,
-        backgroundColor: '#20e866',
+        backgroundColor: '#fff',
+        width: "90%",
+        height: "50%",
+        resizeMode: 'contain',
+    },
+
+    image: {
+        marginBottom: 40,
+        marginTop: 0,
+        //backgroundColor: '#20e866',
+        backgroundColor: '#fff',
         width: "100%",
         height: "30%",
         resizeMode: 'contain',
