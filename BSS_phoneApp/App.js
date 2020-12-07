@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     image: {
         marginBottom: 40,
         marginTop: 0,
-        //backgroundColor: '#20e866',
+        //backgroundColor: '#20e866', green color from original version
         backgroundColor: '#fff',
         width: "100%",
         height: "30%",
