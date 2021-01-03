@@ -1,9 +1,23 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
-import { StyleSheet, Platform, Text, View, Image, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { StatusBar } from 'expo-status-bar'
+import React, { useState, Component } from 'react'
+import { Router, Scene } from 'react-native-router-flux'
+import { StyleSheet, Platform, Text, View, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, AppRegistry } from 'react-native'
+import { Home } from './views/Home.js'
+import { About } from './views/About.js'
+import Routes from './components/Routes.js'
 
+
+class reactTutorialApp extends Component {
+    render() {
+        return (
+            <Routes />
+        )
+    }
+}
+export default reactTutorialApp
+AppRegistry.registerComponent('reactTutorialApp', () => reactTutorialApp)
+/*
 export default function App() {
-
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -111,3 +125,4 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     }
 });
+*/
