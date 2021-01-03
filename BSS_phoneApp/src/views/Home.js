@@ -12,4 +12,4 @@ const Home = () => {
         </TouchableOpacity>
     )
 }
-export default Home
+export default Home;

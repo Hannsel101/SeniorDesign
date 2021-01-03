@@ -2,9 +2,7 @@ import { StatusBar } from 'expo-status-bar'
 import React, { useState, Component } from 'react'
 import { Router, Scene } from 'react-native-router-flux'
 import { StyleSheet, Platform, Text, View, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, AppRegistry } from 'react-native'
-import { Home } from './views/Home.js'
-import { About } from './views/About.js'
-import Routes from './components/Routes.js'
+import Routes from './src/components/Routes.js'
 
 
 class reactTutorialApp extends Component {
