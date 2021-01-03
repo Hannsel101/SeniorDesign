@@ -8,7 +8,7 @@ const Home = () => {
     }
     return (
         <TouchableOpacity style={{ margin: 128 }} onPress={goToAbout}>
-            <Text>This is HOME!</Text>
+            <Text>Hannsel and maya working!</Text>
         </TouchableOpacity>
     )
 }
