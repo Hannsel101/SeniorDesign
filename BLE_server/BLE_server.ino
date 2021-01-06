@@ -8,14 +8,8 @@
 
 void setup() {
 
-  Heltec.begin(true, false, true);
-  // Setup the display
-  Heltec.display->flipScreenVertically();
-
-  // Display initial splash screen
-  Heltec.display->clear();
-  Heltec.display->drawXbm(posX, posY, picRick_width, picRick_height, picRick_bits);
-  Heltec.display->display();
+  // Setup the initial display configurations
+  setupDisplay();
   
   // Initialize Serial Communication at 115200 buadrate
   Serial.begin(115200);

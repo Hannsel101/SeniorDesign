@@ -7,6 +7,17 @@
 #include "heltec.h"
 #include "OLED_Display.h"
 
+void setupDisplay()
+{
+  Heltec.begin(true, false, true);
+  Heltec.display->flipScreenVertically();
+
+  // Display initial splash screen
+  Heltec.display->clear();
+  drawPickle();
+  Heltec.display->display();
+}
+//---------------------------------------------------------------------------------//
 void drawPickle()
 {
   Heltec.display->drawXbm(posX, posY, picRick_width, picRick_height, picRick_bits);  

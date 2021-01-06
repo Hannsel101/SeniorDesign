@@ -80,6 +80,12 @@ const unsigned char picRick_bits[] PROGMEM = {
   
 #pragma once
 
+
+/*
+ * Code for initializing OLED display settings before pushing data to the buffer
+ */
+void setupDisplay();
+
 /*
  * Function to send the XBM formatted bitmap array to the display buffer
  * to prepare it for rendering on the OLED
