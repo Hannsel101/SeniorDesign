@@ -1,15 +1,9 @@
 import React from 'react'
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, StatusBar } from 'react-native';
-import { withNavigation } from 'react-navigation';
-import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom'
-import { Actions } from 'react-native-router-flux'
+import { StyleSheet, Text, View,TextInput,TouchableOpacity,StatusBar } from 'react-native';
+//import { Actions } from 'react-native-router-flux'
 
-const Login = () => {
+const Signup = () => {
 
-    const goToSignup = () => {
-        Actions.signup()
-    }
     return (
         <View style={styles.container}>
             <View style={styles.signupTextCont}>
@@ -22,16 +16,13 @@ const Login = () => {
                     secureTextEntry={true}
                     placeholderTextColor='#212121'
                 />
+                <TextInput style={styles.inputBox}
+                    placeholder="Confirm Password"
+                    secureTextEntry={true}
+                    placeholderTextColor='#212121'
+                />
                 <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonText}> Signin </Text>
-                </TouchableOpacity>
-
-                <View style={styles.signupTextCont}>
-                    <Text style={styles.signupText}> Create an Account </Text>
-                </View>
-
-                <TouchableOpacity onPress={goToSignup}>
-                    <Text style={{ color: '#ffffff', textAlign: 'center', fontSize: 16, fontWeight: 'bold' }}>Signup Now!</Text>
+                    <Text style={styles.buttonText}> Create Account </Text>
                 </TouchableOpacity>
 
                 <StatusBar
@@ -40,9 +31,9 @@ const Login = () => {
                 />
                 <StatusBar style="auto" />
 
-
             </View>
         </View>
+
 
     )
 }
@@ -103,5 +94,4 @@ const styles = StyleSheet.create({
 
 
 });
-
-export default Login;
+export default Signup

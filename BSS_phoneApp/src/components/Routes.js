@@ -4,6 +4,7 @@ import Home from '../views/Home.js'
 import About from '../views/About.js'
 import Profile from '../views/Profile.js'
 import Login from '../views/Login.js'
+import Signup from '../views/Signup.js';
 
 
 const Routes = () => (
@@ -12,6 +13,7 @@ const Routes = () => (
             <Scene key="Login" component={Login} title="Login" />
             <Scene key="home" component={Home} title="Home"  initial={true}/>
             <Scene key="profile" component={Profile} title="Profile"/>
+            <Scene key="signup" component={Signup} title="Signup"/>
             <Scene key="about" component={About} title="About" />
            
         </Scene>
