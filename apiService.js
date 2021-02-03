@@ -33,6 +33,10 @@ export const SignInUser = (email, password) => {
  * 
  * @param {string} email address used to create a new account
  * @param {string} password used for future authentication of the user
+ * 
+ * Function which adds a new entry into the firebase database and alerts
+ * the user when a bad entry has been entered or a the account has been
+ * created successfully
  */
 export const SignUpUser = (email, password) => {
     return new Promise(function(resolve, reject){

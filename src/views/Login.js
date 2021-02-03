@@ -42,6 +42,9 @@ const Login = () => {
    * using the "Signin" button
    */
   const authenticateUser = () => {
+    // Check that the entry fields are not empty before authentication
+    if(credentials.emailAddress && credentials.password)
+    {
       SignInUser(credentials.emailAddress, credentials.password)
       .then((data) =>{
         alert(data);
@@ -49,6 +52,11 @@ const Login = () => {
       .catch((error) =>{
         alert(error);
       });
+    }
+    else
+    {
+      alert("Please fill out the entry fields");
+    }
   };
 
   /**
