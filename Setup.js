@@ -1,7 +1,15 @@
+/**
+ * Imported libraries and APIs
+ */
 import * as React from 'react';
 import firebase from '@react-native-firebase/app';
 import Auth from '@react-native-firebase/auth';
+
+/**
+ * Imported custom classes and variables
+ */
 import App from './App';
+
 
 // Configuration for firebase app to allow the use of the 
 // backend api in the app

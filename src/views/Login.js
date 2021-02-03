@@ -1,3 +1,6 @@
+/**
+ * Imported libraries and APIs
+ */
 import React, {useState} from 'react';
 import {StyleSheet, Text, View,TextInput,TouchableOpacity,StatusBar } from 'react-native';
 import { withNavigation } from 'react-navigation';
@@ -5,6 +8,12 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { Actions } from 'react-native-router-flux';
 import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
+
+/**
+ * Imported custom classes and variables
+ */
+import { Auth } from '../../Setup';
+import {SignInUser} from '../../apiService';
 
 
 const Login = () => {
@@ -17,6 +26,7 @@ const Login = () => {
     emailAddress: '',
     password: '',
   });
+  const [user, setUser] = useState();
 
   /** 
    * Action called when "Singup Now!" is pressed
@@ -32,8 +42,30 @@ const Login = () => {
    * using the "Signin" button
    */
   const authenticateUser = () => {
-      alert(JSON.stringify(credentials));
+      SignInUser(credentials.emailAddress, credentials.password)
+      .then((data) =>{
+        alert(data);
+      })
+      .catch((error) =>{
+        alert(error);
+      });
   };
+
+  /**
+   * Handles the user state when a users state changes from
+   * either logged in or logged out
+   * "useEffect" provides the callback to the firebase api
+   * to call "onAuthStateChanged" function that is defined
+   * here
+   */
+  const onAuthStateChanged = (user) => {
+    setUser(user);
+  }
+  React.useEffect(()=>{
+    const subscriber = Auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber;
+  },[]);
+
 
   return (
 
