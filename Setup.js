@@ -4,6 +4,7 @@
 import * as React from 'react';
 import firebase from '@react-native-firebase/app';
 import Auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
 /**
  * Imported custom classes and variables
