@@ -29,6 +29,9 @@ export default class App extends Component {
       },
       {
         text: 'Remind later',
+      },
+      {
+        text: 'omg',
       }
     ]
   )

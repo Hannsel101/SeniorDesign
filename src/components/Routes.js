@@ -9,6 +9,7 @@ import History from '../views/History.js';
 import Signup from '../views/Signup.js';
 import About from '../views/About.js';
 import Login from '../views/Login.js';
+import Test from '../views/test.js';
 
 const Routes = () => (
     <Router>
@@ -21,6 +22,7 @@ const Routes = () => (
             <Scene key="battery" component={Battery} title="Battery" />
             <Scene key="Login" component={Login} title="Login" />
             <Scene key="about" component={About} title="About" />
+            <Scene key="test" component={Test} title="Test" />
         </Scene>
     </Router>
 )
