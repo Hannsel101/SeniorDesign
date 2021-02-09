@@ -28,6 +28,15 @@ const Signup = () => {
     confirmPass: '',
   });
 
+
+    /**
+     * Function to navigate back to the login page after
+     * Successful account creation
+     * */
+   const goToLogin = () => {
+       Actions.Login()
+   }
+
   /**
    * Action called when the user attempts to create a new
    * account using the "Signup" button
@@ -41,7 +50,8 @@ const Signup = () => {
       {
         SignUpUser(credentials.emailAddress, credentials.password)
         .then((data) =>{
-          alert(data);
+            alert(data);
+            goToLogin();
         })
         .catch((error) =>{
           alert(error);

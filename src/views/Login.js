@@ -38,6 +38,14 @@ const Login = () => {
   };
 
   /**
+   * Action called after a user signs in successfully
+   * Changes the users screen to the home screen
+   * */
+    const goToHome = () => {
+        Actions.home()
+    };
+
+  /**
    * Action called when the user attempts to log in
    * using the "Signin" button
    */
@@ -47,7 +55,8 @@ const Login = () => {
     {
       SignInUser(credentials.emailAddress, credentials.password)
       .then((data) =>{
-        alert(data);
+          alert(data);
+          goToHome();
       })
       .catch((error) =>{
         alert(error);

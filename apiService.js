@@ -43,7 +43,7 @@ export const SignUpUser = (email, password) => {
         Auth()
             .createUserWithEmailAndPassword(email, password)
             .then(() => {
-                resolve('Account Creation Successful!');
+                resolve('Account Creation Successful!\nPlease Log into your new account.');
             })
             .catch(error => {
                 reject(error);
