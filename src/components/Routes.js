@@ -11,6 +11,7 @@ import About from '../views/About.js';
 import Login from '../views/Login.js';
 import Test from '../views/test.js';
 import SearchBar from '../views/SearchBar';
+import Google from '../views/Google';
 
 const Routes = () => (
     <Router>
@@ -25,6 +26,7 @@ const Routes = () => (
             <Scene key="Login" component={Login} title="Login" />
             <Scene key="about" component={About} title="About" />
             <Scene key="test" component={Test} title="Test" />
+            <Scene key="google" component={Google} title="Google" />
         </Scene>
     </Router>
 )
