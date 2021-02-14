@@ -16,8 +16,8 @@ import Google from '../views/Google';
 const Routes = () => (
     <Router>
         <Scene key="root">
-            <Scene key="home" component={Home} title="Home" initial={true}  />
-            <Scene key="searchbar" component={SearchBar} title="Search Location" />
+            <Scene key="home" component={Home} title="Home"  />
+            <Scene key="searchbar" component={SearchBar} title="Search Location"  initial={true} />
             <Scene key="profile" component={Profile} title="Profile"/>
             <Scene key="location" component={Location} title="Location" />
             <Scene key="history" component={History} title="History"/>
