@@ -1,31 +1,110 @@
-import React from 'react';
-import { StyleSheet, Text, View,TextInput,TouchableOpacity,StatusBar } from 'react-native';
+/**
+ * Imported libraries and APIs
+ */
+import React, {useState} from 'react';
+import {StyleSheet, Text, View,TextInput,TouchableOpacity,StatusBar } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { Actions } from 'react-native-router-flux';
+import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
+
+/**
+ * Imported custom classes and variables
+ */
+import { Auth } from '../../Setup';
+import {SignInUser} from '../../apiService';
+
 
 const Login = () => {
 
+  /**
+   * State variable to extract user credentials from input
+   * forms
+   */
+  const [credentials, setCredentials] = useState({
+    emailAddress: '',
+    password: '',
+  });
+  const [user, setUser] = useState();
+
+  /** 
+   * Action called when "Singup Now!" is pressed
+   * Allows the application to navigate to the signup
+   * page
+   */
   const goToSignup = () => {
     Actions.signup()
+  };
+
+  /**
+   * Action called after a user signs in successfully
+   * Changes the users screen to the home screen
+   * */
+    const goToHome = () => {
+        Actions.home()
+    };
+
+  /**
+   * Action called when the user attempts to log in
+   * using the "Signin" button
+   */
+  const authenticateUser = () => {
+    // Check that the entry fields are not empty before authentication
+    if(credentials.emailAddress && credentials.password)
+    {
+      SignInUser(credentials.emailAddress, credentials.password)
+      .then((data) =>{
+          alert(data);
+          goToHome();
+      })
+      .catch((error) =>{
+        alert(error);
+      });
+    }
+    else
+    {
+      alert("Please fill out the entry fields");
+    }
+  };
+
+  /**
+   * Handles the user state when a users state changes from
+   * either logged in or logged out
+   * "useEffect" provides the callback to the firebase api
+   * to call "onAuthStateChanged" function that is defined
+   * here
+   */
+  const onAuthStateChanged = (user) => {
+    setUser(user);
   }
+  React.useEffect(()=>{
+    const subscriber = Auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber;
+  },[]);
+
 
   return (
-  
+
     <View style={styles.container}>
       <View style={styles.signupTextCont}>
         <TextInput style={styles.inputBox}
           placeholder="Email"
           placeholderTextColor='#212121'
+          value={credentials.emailAddress}
+          onChangeText={(Text)=>setCredentials({...credentials, emailAddress:Text})}
         />
         <TextInput style={styles.inputBox}
           placeholder="Password"
           secureTextEntry={true}
           placeholderTextColor='#212121'
+          value={credentials.password}
+          onChangeText={(Text)=>setCredentials({...credentials, password:Text})}
         />
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}> Signin </Text>
+        <TouchableOpacity 
+          style={styles.button} 
+          onPress={() => authenticateUser()}>
+            <Text style={styles.buttonText}> Signin </Text>
         </TouchableOpacity>
 
         <View style={styles.signupTextCont}>
@@ -41,8 +120,6 @@ const Login = () => {
           barStyle="light-content"
         />
         <StatusBar style="auto" />
-
-
       </View>
     </View>
 

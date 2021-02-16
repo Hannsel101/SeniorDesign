@@ -1,13 +1,72 @@
-import React from 'react';
+/**
+ * Imported libraries and APIs
+ */
+import React, {useState} from 'react';
 import { StyleSheet, Text, View,TextInput,TouchableOpacity,StatusBar } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { Actions } from 'react-native-router-flux'
 
+
+/**
+ * Imported custom classes and variables
+ */
+import { Auth } from '../../Setup';
+import {SignUpUser} from '../../apiService';
+
+
 const Signup = () => {
 
+  /**
+   * State variable to extract user credentials from input
+   * forms
+   */
+  const [credentials, setCredentials] = useState({
+    emailAddress: '',
+    password: '',
+    confirmPass: '',
+  });
 
+
+    /**
+     * Function to navigate back to the login page after
+     * Successful account creation
+     * */
+   const goToLogin = () => {
+       Actions.Login()
+   }
+
+  /**
+   * Action called when the user attempts to create a new
+   * account using the "Signup" button
+   */
+  const createNewAccount = () => {
+    //check that entry fields are not empty
+    if(credentials.emailAddress && credentials.password && credentials.confirmPass)
+    {
+      // Verify that both password inputs match
+      if(credentials.password === credentials.confirmPass)
+      {
+        SignUpUser(credentials.emailAddress, credentials.password)
+        .then((data) =>{
+            alert(data);
+            goToLogin();
+        })
+        .catch((error) =>{
+          alert(error);
+        });
+      }
+      else
+      {
+        alert("Error passwords do not match!");
+      }
+    }
+    else
+    {
+      alert("Please fill out the entry fields");
+    }  
+  };
 
   return (
     <View style={styles.container}>
@@ -15,19 +74,27 @@ const Signup = () => {
         <TextInput style={styles.inputBox}
           placeholder="Email"
           placeholderTextColor='#212121'
+          value={credentials.emailAddress}
+          onChangeText={(Text)=>setCredentials({...credentials, emailAddress:Text})}
         />
         <TextInput style={styles.inputBox}
           placeholder="Password"
           secureTextEntry={true}
           placeholderTextColor='#212121'
+          value={credentials.password}
+          onChangeText={(Text)=>setCredentials({...credentials, password:Text})}
         />
         <TextInput style={styles.inputBox}
           placeholder="Confirm Password"
           secureTextEntry={true}
           placeholderTextColor='#212121'
+          value={credentials.confirmPass}
+          onChangeText={(Text)=>setCredentials({...credentials, confirmPass:Text})}
         />
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}> Create Account </Text>
+        <TouchableOpacity 
+          style={styles.button}
+          onPress ={() => createNewAccount()}>
+            <Text style={styles.buttonText}> Create Account </Text>
         </TouchableOpacity>
 
         <StatusBar
