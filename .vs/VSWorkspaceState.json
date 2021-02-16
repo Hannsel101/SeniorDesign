@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\assets",
+    "\\src\\components",
+    "\\src\\views",
+    "\\src\\views\\bluetooth"
+  ],
+  "SelectedNode": "\\src\\views\\bluetooth\\bluetooth-list-layout.js",
+  "PreviewInSolutionExplorer": false
+}
