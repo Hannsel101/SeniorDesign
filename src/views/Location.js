@@ -5,18 +5,22 @@ import { request, PERMISSIONS } from 'react-native-permissions';
 import MapView, { PROVIDER_GOOGLE, Marker, Callout, Circle } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import { Actions } from 'react-native-router-flux';
+import { TextInput } from 'react-native-gesture-handler';
 
 export default class App extends Component {
-  /*Creating different ear by location in states* */
-  state = { 
-    coordinate: [
-      { name: '1', latitude: 37.802525259, longitude: -122.4351431 },
-      { name: '2', latitude: 37.7896386, longitude: -122.421646 },
-      { name: '3', latitude: 37.77825, longitude: -122.4151431 },
-      { name: '4', latitude: 37.78825, longitude: -122.4351431 }
-
-    ]
+  // creating props to find the destinations
+  constructor(props) {
+    super(props);
+    this.state = {
+      error: "",
+      latitude: 0,
+      longitude: 0,
+      destination: "",
+      predictions: []
+    }
   }
+
+ // created location permission setup
   componentDidMount() {
     this.requestLocationPermission();
   }
@@ -63,39 +67,49 @@ export default class App extends Component {
     )
 
   }
+  // to get the destinations and predictions
+  async onChangeDestination(destination) {
+    //Calls place autocomplete
+    this.setState({ destination });
+    const apiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=AIzaSyBOioG_vFXvfG6PeJ-ou4TSI9ytT6ImeG0&input=${destination}&location=${this.state.latitude},${this.state.longitude}&radius=2000`;
+    try {
+      const result = await fetch(apiUrl);
+      const json = await result.json();
+      this.setState({
+        predictions: json.predictions
+      })
+    } catch (err) {
+      console.error(err);
+    }
+
+  }
+
   render() {
-    const goToSearchBar = () => {
-      Actions.searchbar()
-    } /*Adding maps next* */
+    const predictions = this.state.predictions.map(prediction => (
+      <Text key={prediction.id}>{prediction.description}</Text>
+    ));
+ /*Adding maps next* */
     return (
       <View style={styles.container}>
+        
         
         <MapView
           provider={PROVIDER_GOOGLE}
           showsUserLocation={true}
           style={styles.map}
+          // intial co-ordinates for redwood city
           initialRegion={{
-            latitude: 37.78825,
-            longitude: -122.4324,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
+            latitude: 37.4848,
+            longitude: -122.2281,
+            latitudeDelta: 0.522,
+            longitudeDelta: 0.6921,
           }}>
-          <Circle
-            center={{ latitude: 37.78825, longitude: -122.4324 }}
-            radius={2000}
-            fillColor={'rgba(200,300,300,0.5)'}
-          />
-          <Marker  /*Marker that will be used for destination location* */
-            draggable
-            coordinate={{ latitude: 37.78825, longitude: -122.4324 }}>
-            <Callout onPress={this.showalertMessage}>
-              <Text> Marker placed here  </Text>
-            </Callout >
-          </Marker>
         </MapView>
-        <TouchableOpacity style={{ margin: 20, borderRadius: 8, opacity: 4 }} onPress={goToSearchBar}>
-          <Text> Add Location! </Text>
-        </TouchableOpacity>
+        <TextInput placeholder="Enter Destination Location !"
+          style={styles.destinationInput}
+          value={this.state.destination}
+          onChangeText={destination => this.onChangeDestination(destination)} />
+       {predictions}
       </View>
     )
   }
@@ -109,5 +123,19 @@ const styles = StyleSheet.create({
   map: {
     flex: 1,
     height: '100%',
-  }
+  },
+  destinationInput: {
+    height: 40,
+    marginTop: 10,
+    marginRight:5,
+    marginBottom:10,
+    marginVertical:10,
+    marginLeft: 5,
+    fontSize: 20,
+    padding: 2,
+    backgroundColor:"white",
+    borderWidth:0.2
+  },
 })
+
+/*Making changes to location maps*** */
