@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, Alert, Platform, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, Alert, Platform, TouchableOpacity, TouchableHighlight, Touchable} from 'react-native';
 import { request, PERMISSIONS } from 'react-native-permissions';
 import MapView, { PROVIDER_GOOGLE, Marker, Callout, Polyline } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
@@ -70,7 +70,7 @@ export default class App extends Component {
 
   }
   // getting routes 
-  async getRouteDirections() {
+  async getRouteDirections(placeId) {
     try {
       const response = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${
         this.state.latitude
@@ -109,9 +109,14 @@ export default class App extends Component {
 
   render() {
     const predictions = this.state.predictions.map(prediction => (
-      <Text style={styles.suggestions} key={prediction.id}>
+      <TouchableHighlight onPress={() => this.getRouteDirections(prediction.place_id)} 
+      key={prediction.id}> 
+      <View>
+      <Text style={styles.suggestions}>
         {prediction.description}
       </Text>
+      </View>
+      </TouchableHighlight>
     ));
     /*Adding maps next* */
     return (
@@ -129,8 +134,8 @@ export default class App extends Component {
             
           }}>
           <Polyline coordinates={this.state.pointCoords}
-          StrokeWidth={2}
-          StrokeColor="pink"
+          StrokeWidth={7}
+          StrokeColor="red"
 
         />
         </MapView>
