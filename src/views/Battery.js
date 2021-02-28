@@ -8,7 +8,9 @@ const Battery = () => {
     const goToLocation = () => {
         Actions.location()
       }
-
+      const goToSearchBar = () => {
+        Actions.searchbar()
+      }
     return (
         <View style={styles.container}>
          <StatusBar

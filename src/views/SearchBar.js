@@ -19,12 +19,7 @@ export default class App extends Component {
       predictions: []
     }
   }
-  componentWillUnmount() {
-    // fix Warning: Can't perform a React state update on an unmounted component
-    this.setState = (state,callback)=>{
-        return;
-    };
-}
+
   componentDidMount() {
     Geolocation.getCurrentPosition(
       position => {
