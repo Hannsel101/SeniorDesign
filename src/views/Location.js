@@ -63,6 +63,7 @@ export default class App extends Component {
     }
 
   }
+  
 
   async onChangeDestination(destination) {
     //Calls place autocomplete
@@ -81,6 +82,7 @@ export default class App extends Component {
   }
 
   render() {
+    // highlights the predictions on press
     const predictions = this.state.predictions.map(prediction => (
       <TouchableHighlight onPress={() => {
         this.getRouteDirections(prediction.place_id);
@@ -94,7 +96,8 @@ export default class App extends Component {
         </View>
       </TouchableHighlight>
     ));
-    /*Adding maps next* */
+    /*Adding maps next* 
+    Polyline shows the directions on maps*/
     return (
       <View style={styles.container}>
         <MapView
@@ -109,6 +112,7 @@ export default class App extends Component {
             longitudeDelta: 0.6921,
 
           }}>
+            
           <Polyline coordinates={this.state.pointCoords}
             StrokeWidth={7}
             StrokeColor="red"

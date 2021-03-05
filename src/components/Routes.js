@@ -16,10 +16,10 @@ import Google from '../views/Google';
 const Routes = () => (
     <Router>
         <Scene key="root">
-            <Scene key="home" component={Home} title="Home"   />
+            <Scene key="home" component={Home} title="Home" initial={true}  />
             <Scene key="searchbar" component={SearchBar} title="Search Location" />
             <Scene key="profile" component={Profile} title="Profile"/>
-            <Scene key="location" component={Location} title="Location" initial={true} />
+            <Scene key="location" component={Location} title="Location"  />
             <Scene key="history" component={History} title="History"/>
             <Scene key="signup" component={Signup} title="Signup"/>
             <Scene key="battery" component={Battery} title="Battery" />
