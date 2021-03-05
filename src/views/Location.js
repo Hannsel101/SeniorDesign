@@ -1,10 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, Alert, Platform, TouchableOpacity, TouchableHighlight, Touchable} from 'react-native';
+import { StyleSheet, Text, View, Platform, TouchableHighlight, Keyboard } from 'react-native';
 import { request, PERMISSIONS } from 'react-native-permissions';
-import MapView, { PROVIDER_GOOGLE, Marker, Callout, Polyline } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Polyline } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
-import { Actions } from 'react-native-router-flux';
 import { TextInput } from 'react-native-gesture-handler';
 import PolyLine from '@mapbox/polyline';
 
@@ -22,60 +21,36 @@ export default class App extends Component {
     }
   }
 
-  // created location permission setup
-  componentDidMount() {
-    this.requestLocationPermission();
-  }
-  /*Allows permission from the user to locate
-     * there  current location * */
+  /*Allows permission from the user to locate their  current location * */
   requestLocationPermission = async () => {
     if (Platform.OS === 'ios') {
-      var response = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
-      console.log('iPhone:' + response);
-      if (response === 'granted') {
-        this.locateCurrentPosition
-      }
-    }
-    else {
-      var response = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
-      console.log('Android:' + response);
-      if (response === 'granted') {
-        this.locateCurrentPosition
-      }
+      await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+    } else {
+      await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
     }
   }
-  locateCurrentPosition = () => {
-    Geolocation.getCurrentPosition(
-      position => {
-        console.log(JSON.stringify(position));
-      }
-    )
 
-  }
   // to get the destinations and predictions
   // getting current position for predictions
   componentDidMount() {
+    this.requestLocationPermission();
     Geolocation.getCurrentPosition(
       position => {
         this.setState({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude
         });
-        this.getRouteDirections();
       },
       error => this.setState({ error: error.message }),
       { enableHighAccuracy: true, maximumAge: 2000, timeout: 20000 }
     );
-    
+
 
   }
   // getting routes 
   async getRouteDirections(placeId) {
     try {
-      const response = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${
-        this.state.latitude
-        },${this.state.longitude
-        }&destination=Universal+Studios+Hollywood&key=AIzaSyBOioG_vFXvfG6PeJ-ou4TSI9ytT6ImeG0`
+      const response = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${this.state.latitude},${this.state.longitude}&destination=place_id:${placeId}&key=AIzaSyBOioG_vFXvfG6PeJ-ou4TSI9ytT6ImeG0`
       );
       const json = await response.json();
       const points = PolyLine.decode(json.routes[0].overview_polyline.points);
@@ -89,8 +64,6 @@ export default class App extends Component {
 
   }
 
-
-  // change destination
   async onChangeDestination(destination) {
     //Calls place autocomplete
     this.setState({ destination });
@@ -109,13 +82,16 @@ export default class App extends Component {
 
   render() {
     const predictions = this.state.predictions.map(prediction => (
-      <TouchableHighlight onPress={() => this.getRouteDirections(prediction.place_id)} 
-      key={prediction.id}> 
-      <View>
-      <Text style={styles.suggestions}>
-        {prediction.description}
-      </Text>
-      </View>
+      <TouchableHighlight onPress={() => {
+        this.getRouteDirections(prediction.place_id);
+        Keyboard.dismiss();
+      }}
+        key={prediction.id}>
+        <View>
+          <Text style={styles.suggestions}>
+            {prediction.description}
+          </Text>
+        </View>
       </TouchableHighlight>
     ));
     /*Adding maps next* */
@@ -131,13 +107,13 @@ export default class App extends Component {
             longitude: -122.2281,
             latitudeDelta: 0.522,
             longitudeDelta: 0.6921,
-            
+
           }}>
           <Polyline coordinates={this.state.pointCoords}
-          StrokeWidth={7}
-          StrokeColor="red"
+            StrokeWidth={7}
+            StrokeColor="red"
 
-        />
+          />
         </MapView>
 
         <TextInput placeholder="Enter Destination Location !"
