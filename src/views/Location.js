@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Platform, TouchableHighlight, Keyboard } from 'react-native';
 import { request, PERMISSIONS } from 'react-native-permissions';
-import MapView, { PROVIDER_GOOGLE, Polyline } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Polyline, Marker } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import { TextInput } from 'react-native-gesture-handler';
 import PolyLine from '@mapbox/polyline';
@@ -48,7 +48,7 @@ export default class App extends Component {
 
   }
   // getting routes 
-  async getRouteDirections(placeId) {
+  async getRouteDirections(placeId, destinationName) {
     try {
       const response = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${this.state.latitude},${this.state.longitude}&destination=place_id:${placeId}&key=AIzaSyBOioG_vFXvfG6PeJ-ou4TSI9ytT6ImeG0`
       );
@@ -57,13 +57,18 @@ export default class App extends Component {
       const pointCoords = points.map(point => {
         return { latitude: point[0], longitude: point[1] };
       });
-      this.setState({ pointCoords });
+      this.setState({ pointCoords, destination: destinationName });
+      // dismissing the keyboard after location is set
+      Keyboard.dismiss();
+      // zooming in the location after location is set
+      this.map.fitToCoordinates(pointCoords);
+      // passing latitude and longitude to zoom using pointCoords
     } catch (err) {
       console.error(err);
     }
 
   }
-  
+
 
   async onChangeDestination(destination) {
     //Calls place autocomplete
@@ -82,16 +87,27 @@ export default class App extends Component {
   }
 
   render() {
-    // highlights the predictions on press
+    let marker = null;
+    // when click prediction marker display on destination
+    if (this.state.pointCoords.length > 1) {
+      // if someone clicks pointcoords then
+      //marker will be very last object of the pointCoords array
+      marker = (
+        <Marker coordinate={this.state.pointCoords[this.state.pointCoords.length - 1]} 
+        />
+      );
+    }
+
+    // highlights the predictions on press + ensure destination name stays in location box
     const predictions = this.state.predictions.map(prediction => (
       <TouchableHighlight onPress={() => {
-        this.getRouteDirections(prediction.place_id);
-        Keyboard.dismiss();
+        this.getRouteDirections(prediction.place_id, prediction.structured_formatting.main_text);
+
       }}
         key={prediction.id}>
         <View>
           <Text style={styles.suggestions}>
-            {prediction.description}
+            {prediction.structured_formatting.main_text}
           </Text>
         </View>
       </TouchableHighlight>
@@ -101,6 +117,7 @@ export default class App extends Component {
     return (
       <View style={styles.container}>
         <MapView
+          ref={map => { this.map = map; }}
           provider={PROVIDER_GOOGLE}
           showsUserLocation={true}
           style={styles.map}
@@ -112,12 +129,13 @@ export default class App extends Component {
             longitudeDelta: 0.6921,
 
           }}>
-            
+
           <Polyline coordinates={this.state.pointCoords}
             StrokeWidth={7}
             StrokeColor="red"
 
           />
+          {marker}
         </MapView>
 
         <TextInput placeholder="Enter Destination Location !"
