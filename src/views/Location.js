@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Platform, TouchableHighlight, Keyboard } from 'react-native';
+import { StyleSheet, Text, View, Platform, TouchableHighlight, Keyboard, Image } from 'react-native';
 import { request, PERMISSIONS } from 'react-native-permissions';
 import MapView, { PROVIDER_GOOGLE, Polyline, Marker } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
@@ -93,7 +93,7 @@ export default class App extends Component {
       // if someone clicks pointcoords then
       //marker will be very last object of the pointCoords array
       marker = (
-        <Marker coordinate={this.state.pointCoords[this.state.pointCoords.length - 1]} 
+        <Marker coordinate={this.state.pointCoords[this.state.pointCoords.length - 1]}
         />
       );
     }
@@ -129,6 +129,16 @@ export default class App extends Component {
             longitudeDelta: 0.6921,
 
           }}>
+          <Marker
+            coordinate={{ latitude: 37.5630, longitude: -122.3255 }}
+          >
+            <Image style={{ width: 20, height: 20 }} source={require('../assets/black_logo.png')} />
+          </Marker>
+          <Marker
+            coordinate={{ latitude: 36.7378, longitude: -119.3255 }}
+          >
+            <Image style={{ width: 20, height: 20 }} source={require('../assets/black_logo.png')} />
+          </Marker>
 
           <Polyline coordinates={this.state.pointCoords}
             StrokeWidth={7}

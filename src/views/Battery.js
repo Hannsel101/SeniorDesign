@@ -18,7 +18,7 @@ const Battery = () => {
             barStyle="light-content"
         />
         <Image style={{ width: 150, height: 150, justifyContent: 'center',alignItems: 'center' }}
-           source ={require('../assets/smiling_battery.png')}
+           source ={require('../assets/batterhistory.png')}
         />
 
          <TouchableOpacity style={styles.button}>

@@ -12,7 +12,7 @@ const About = () => {
         <TouchableOpacity style={{ margin: 128 }} onPress={goToLogin}>
             <Text>Click on Login  </Text>
         </TouchableOpacity>
-        <Text>This is a Battery Swapping App.... </Text>
+        <Text>Welcome to Battery Swapping App.  </Text>
         </View>
         
     )
