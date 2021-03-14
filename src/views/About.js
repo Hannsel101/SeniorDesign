@@ -7,11 +7,18 @@ const About = () => {
     const goToLogin = () => {
         Actions.Login()
     }
+    const goToBatteryinfo = () => {
+        Actions.batteryinfo()
+    }
     return (
         <View>
         <TouchableOpacity style={{ margin: 128 }} onPress={goToLogin}>
             <Text>Click on Login  </Text>
         </TouchableOpacity>
+        <TouchableOpacity style={{ margin: 128 }} onPress={goToBatteryinfo}>
+            <Text>Click on batteryinfo  </Text>
+        </TouchableOpacity>
+
         <Text>Welcome to Battery Swapping App.  </Text>
         </View>
         

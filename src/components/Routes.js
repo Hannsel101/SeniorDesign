@@ -12,11 +12,12 @@ import Login from '../views/Login.js';
 import Test from '../views/test.js';
 import SearchBar from '../views/SearchBar';
 import Google from '../views/Google';
+import Batteryinfo from '../views/Batteryinfo';
 
 const Routes = () => (
     <Router>
         <Scene key="root">
-            <Scene key="home" component={Home} title="Home"  initial={true} />
+            <Scene key="home" component={Home} title="Home" initial={true}  />
             <Scene key="searchbar" component={SearchBar} title="Search Location" />
             <Scene key="profile" component={Profile} title="Profile"/>
             <Scene key="location" component={Location} title="Location"   />
@@ -27,6 +28,7 @@ const Routes = () => (
             <Scene key="about" component={About} title="About" />
             <Scene key="test" component={Test} title="Test" />
             <Scene key="google" component={Google} title="Google" />
+            <Scene key="batteryinfo" component={Batteryinfo} title="Batteryinfo"   />
         </Scene>
     </Router>
 )
