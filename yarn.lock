@@ -7171,6 +7171,11 @@
   "resolved" "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz"
   "version" "3.0.4"
 
+"react-native-ble-manager@^7.4.2":
+  "integrity" "sha512-V9vg5g4OTasivBFIjxltDMEdFxCVcrS3BpULNXDSRkJJ+8STvmrpwksSJUo2R/kEh7dxs263aEHetOBeIdvGGQ=="
+  "resolved" "https://registry.npmjs.org/react-native-ble-manager/-/react-native-ble-manager-7.4.2.tgz"
+  "version" "7.4.2"
+
 "react-native-bluetooth-serial-next@^1.2.3":
   "integrity" "sha512-P5HtiiIvCkokR+kYWRioRn/wq/NgJjRtf15Sp/nRlD3xgjxQdhalXAlE6U/WlTZ1QWD5/FZO4/ur6ChRFO3n9Q=="
   "resolved" "https://registry.yarnpkg.com/react-native-bluetooth-serial-next/-/react-native-bluetooth-serial-next-1.2.3.tgz"

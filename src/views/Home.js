@@ -3,6 +3,9 @@ import { StyleSheet, TouchableOpacity, Text, StatusBar, View, TextInput, Image }
 import { Actions } from 'react-native-router-flux'
 
 const Home = () => {
+    const goToBluetooth = () => {
+        Actions.bluetooth()
+    }
     const goToLocation = () => {
         Actions.location()
     }
@@ -32,6 +35,9 @@ const Home = () => {
             <Image style={{ width: 150, height: 150, justifyContent: 'center',alignItems: 'center',marginTop: 140 }}
             source ={require('../assets/caricon.png')}
              />
+             <TouchableOpacity style={styles.button} onPress={goToBluetooth}>
+                <Text style={styles.buttonText}> Bluetooth </Text>
+            </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={goToLogin}>
                 <Text style={styles.buttonText}> Login </Text>
             </TouchableOpacity>

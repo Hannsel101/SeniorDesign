@@ -14,8 +14,8 @@ import BluetoothList from '../views/bluetooth/bluetooth-list';
 const Routes = () => (
     <Router>
         <Scene key="root">
-            <Scene key="bluetooth" component={BluetoothList} title="BLE Testing" initial={true}/>
-            <Scene key="home" component={Home} title="Home"/>
+            <Scene key="bluetooth" component={BluetoothList} title="BLE Testing"/>
+            <Scene key="home" component={Home} title="Home" initial={true}/>
             <Scene key="profile" component={Profile} title="Profile"/>
             <Scene key="location" component={Location} title="Location" />
             <Scene key="history" component={History} title="History"/>

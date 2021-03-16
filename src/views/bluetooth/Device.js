@@ -4,12 +4,14 @@ import {
     Text,
     TouchableOpacity,
     StyleSheet,
-    Image
+    Image,
+    Alert
 } from 'react-native'
 
 import Separator from './Separator.js'
 
 function Device(props) {
+
     return (
         <>
         <TouchableOpacity style={styles.wrapper} onPress={props.onPress}>
