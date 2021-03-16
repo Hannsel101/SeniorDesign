@@ -8,13 +8,13 @@ const Batteryinfo = () => {
     return (
         <View style={styles.container}>
             <Image style={{ width: 90, height: 110 }}
-                source={require('../assets/greencell.png')}
+                source={require('../assets/greenb.png')}
             />
             <Image style={{ width: 90, height: 110 }}
-                source={require('../assets/yellowcell.png')}
+                source={require('../assets/yellowb.png')}
             />
             <Image style={{ width: 90, height: 110 }}
-                source={require('../assets/redcell.png')}
+                source={require('../assets/redb.png')}
             />
             <Image style={{ width: 90, height: 110 }}
                 source={require('../assets/deadcell.png')}
@@ -26,19 +26,19 @@ const Batteryinfo = () => {
             <StatusBar style="auto" />
 
             <TouchableOpacity style={styles.button}>
-                <Text style={{ color: 'black', textAlign: 'center', fontSize: 14, fontWeight: 'bold' }}> UBP: all </Text>
+                <Text style={{ color: 'black', textAlign: 'center', fontSize: 14, fontWeight: 'bold' }}> UBP: none </Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.button}>
-                <Text style={{ color: 'black', textAlign: 'center', fontSize: 14, fontWeight: 'bold' }}> Charge: all </Text>
+                <Text style={{ color: 'black', textAlign: 'center', fontSize: 14, fontWeight: 'bold' }}> Charge: Unknown </Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.button}>
-                <Text style={{ color: 'black', textAlign: 'center', fontSize: 14, fontWeight: 'bold' }}> Temperature: hot as fuck </Text>
+                <Text style={{ color: 'black', textAlign: 'center', fontSize: 14, fontWeight: 'bold' }}> Temperature: Unknown  </Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.button}>
-                <Text style={{ color: 'black', textAlign: 'center', fontSize: 14, fontWeight: 'bold' }}> Health: all </Text>
+                <Text style={{ color: 'black', textAlign: 'center', fontSize: 14, fontWeight: 'bold' }}> Health: Unknown </Text>
             </TouchableOpacity>
         </View>
 
