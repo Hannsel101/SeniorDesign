@@ -105,6 +105,6 @@ void drawConnected();
  *          charge = percentage of amp-hours remaining on the UBP
  *          temperature = temperature of the currently used UBP in degrees farenheight
  */
-void drawSensorReadings(uint8_t health, float charge, uint8_t temperature);
+void drawSensorReadings(uint8_t health, float charge, float temperature);
 
 #endif

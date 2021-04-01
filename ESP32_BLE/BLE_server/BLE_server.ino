@@ -52,7 +52,7 @@ void loop() {
   float h = dht.readHumidity();
   float t = dht.readTemperature();
 
-  Serial.print("Humidity: ");
+  Serial.print("\nHumidity: ");
   Serial.println(h);
   Serial.print("Temperature: ");
   Serial.println(t);
@@ -60,33 +60,25 @@ void loop() {
   // If connected to a central device then begin transmitting sensor data periodically and 
   // accept commands at any moment
   if(BMS_BLE.connectionActive())
-    {
+  {
       uint8_t val = 0;
+      
       // Update LCD to show readings
       drawConnected();
 
-      // Begin sending UBP updates and waiting for commands
-      //startTime = millis();
       while(BMS_BLE.connectionActive())
       {
-        //currTime = millis();
-        //if(currTime - startTime >= POLLING_RATE)
-        //{
-          //startTime = currTime;
-          BMS_BLE.sendUpdate(val);
-          val++;
-          //Serial.println("HEY WE POLLED!");
-        //}
-        // Added delay to prevent the program from getting hung up when calling "millis()"
+        BMS_BLE.sendUpdate(val);
+        val++;
+        break;
         delay(100);
       }
-      
-      //drawSensorReadings(5, 5, 5);
-    }
+      drawSensorReadings(5,5,t);
+  }
   else
-    {
-      drawDisconnected();
-    }
+  {
+    drawDisconnected();
+  }
   Heltec.display->display();
   delay(1000);
 }

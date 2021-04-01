@@ -218,8 +218,6 @@ void BLE_Server::configAdvertising()
 //---------------------------------------------------------------------------------//
 void BLE_Server::sendUpdate(uint8_t val)
 {
-  Serial.println("Made it into send update func");
-  delay(4);
   batteryStatusCharacteristic->setValue((uint8_t*)&val, 4);
   batteryStatusCharacteristic->notify();
   delay(4);

@@ -38,7 +38,7 @@ void drawDisconnected()
   Heltec.display->drawHorizontalLine(0,16, 128);
 }
 //---------------------------------------------------------------------------------//
-void drawSensorReadings(uint8_t health, float charge, uint8_t temperature)
+void drawSensorReadings(uint8_t health, float charge, float temperature)
 {
   // Left align the text and specify a font size of 10
   Heltec.display->setTextAlignment(TEXT_ALIGN_LEFT);
@@ -59,10 +59,9 @@ void drawSensorReadings(uint8_t health, float charge, uint8_t temperature)
   // Convert the temperature from unsigned integer to string format
   // then add "Temperature: " and the temperature to the display buffer
   // along with the degree symbol specified by "\xC2\xB0"
-  temperature = 72;
   String temp = String(temperature);
   Heltec.display->drawString(3, 42, "Temperature: ");
-  Heltec.display->drawString(69, 42, String(temp + "\xC2\xB0" + "F"));
+  Heltec.display->drawString(69, 42, String(temp + "\xC2\xB0" + "C"));
 }
 //---------------------------------------------------------------------------------//
 
