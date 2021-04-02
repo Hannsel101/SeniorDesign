@@ -38,6 +38,9 @@ const Home = () => {
              <TouchableOpacity style={styles.button} onPress={goToBluetooth}>
                 <Text style={styles.buttonText}> Bluetooth </Text>
             </TouchableOpacity>
+            <Image style={{ width: 180, height: 180, justifyContent: 'center',alignItems: 'center',marginTop: 140 }}
+            source ={require('../assets/white_logo.png')}
+             />
             <TouchableOpacity style={styles.button} onPress={goToLogin}>
                 <Text style={styles.buttonText}> Login </Text>
             </TouchableOpacity>

@@ -2,7 +2,7 @@
  * Imported libraries and APIs
  */
 import React, {useState} from 'react';
-import { StyleSheet, Text, View,TextInput,TouchableOpacity,StatusBar } from 'react-native';
+import { StyleSheet, Text, View,TextInput,TouchableOpacity,StatusBar, Image } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
