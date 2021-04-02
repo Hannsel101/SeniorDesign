@@ -8,7 +8,12 @@ const Battery = () => {
     const goToLocation = () => {
         Actions.location()
       }
-
+      const goToSearchBar = () => {
+        Actions.searchbar()
+      }
+      const goToBatteryinfo = () => {
+        Actions.batteryinfo()
+    }      
     return (
         <View style={styles.container}>
          <StatusBar
@@ -16,7 +21,7 @@ const Battery = () => {
             barStyle="light-content"
         />
         <Image style={{ width: 150, height: 150, justifyContent: 'center',alignItems: 'center' }}
-           source ={require('../assets/smiling_battery.png')}
+           source ={require('../assets/batterhistory.png')}
         />
 
          <TouchableOpacity style={styles.button}>
@@ -25,6 +30,10 @@ const Battery = () => {
 
        <TouchableOpacity style={styles.button} onPress={goToLocation}>
         <Text style={{ color: 'black', textAlign: 'center',fontSize: 20, fontWeight: 'bold'}}> Look for BSS near me! </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={goToBatteryinfo}>
+        <Text style={{ color: 'black', textAlign: 'center',fontSize: 20, fontWeight: 'bold'}}> Battery Infomation </Text>
         </TouchableOpacity>
 
         </View>
