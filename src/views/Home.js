@@ -32,18 +32,18 @@ const Home = () => {
                 barStyle="light-content"
             />
             <StatusBar style="auto" />
-            <Image style={{ width: 150, height: 150, justifyContent: 'center',alignItems: 'center',marginTop: 140 }}
-            source ={require('../assets/caricon.png')}
-             />
-             <TouchableOpacity style={styles.button} onPress={goToBluetooth}>
-                <Text style={styles.buttonText}> Bluetooth </Text>
-            </TouchableOpacity>
+
             <Image style={{ width: 180, height: 180, justifyContent: 'center',alignItems: 'center',marginTop: 140 }}
             source ={require('../assets/white_logo.png')}
              />
+             
+             <TouchableOpacity style={styles.button} onPress={goToBluetooth}>
+                <Text style={styles.buttonText}> Bluetooth </Text>
+            </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={goToLogin}>
                 <Text style={styles.buttonText}> Login </Text>
             </TouchableOpacity>
+            
             <TouchableOpacity style={styles.button} onPress={goToProfile}>
                 <Text style={styles.buttonText}> View Profile </Text>
             </TouchableOpacity>
