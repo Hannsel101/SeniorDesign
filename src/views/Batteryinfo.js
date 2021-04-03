@@ -4,7 +4,6 @@ import { TouchableOpacity, Text, TextInput, View, StatusBar, Image, StyleSheet }
 
 const Batteryinfo = () => {
 
-
     return (
         <View style={styles.container}>
             <Image style={styles.batteryImage}
@@ -54,7 +53,7 @@ const styles = StyleSheet.create({
     button: {
         width: 290,
         height: 80,
-        left: 134,
+        left: 160,
         bottom: 320,
         backgroundColor: '#ededed',
         borderRadius: 40,
@@ -75,8 +74,10 @@ const styles = StyleSheet.create({
     },
     batteryImage: {
         width: 90,
+        top: 90,
+        left: 35,
         height: 110,
-    }
+         }
 
 });
 export default Batteryinfo

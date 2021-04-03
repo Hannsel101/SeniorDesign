@@ -205,6 +205,7 @@ function BluetoothList(props)
                 data={list}
                 ListEmptyComponent={renderEmpty}
                 renderItem={renderItem}
+                keyExtractor={item => item.id}
             />
         </Layout>
     )
