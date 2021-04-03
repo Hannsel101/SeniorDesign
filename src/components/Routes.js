@@ -20,7 +20,7 @@ const Routes = () => (
         <Scene key="root">
             <Scene key="bluetooth" component={BluetoothList} title="BLE Testing"/>
 
-            <Scene key="home" component={Home} title="Home" initial={true}  />
+            <Scene key="home" component={Home} title="Home"  />
             <Scene key="searchbar" component={SearchBar} title="Search Location" />
             <Scene key="profile" component={Profile} title="Profile"/>
             <Scene key="location" component={Location} title="Location"   />
@@ -31,7 +31,7 @@ const Routes = () => (
             <Scene key="about" component={About} title="About" />
             <Scene key="test" component={Test} title="Test" />
             <Scene key="google" component={Google} title="Google" />
-            <Scene key="batteryinfo" component={Batteryinfo} title="Batteryinfo"   />
+            <Scene key="batteryinfo" component={Batteryinfo} title="Batteryinfo"  initial={true}   />
         </Scene>
     </Router>
 )

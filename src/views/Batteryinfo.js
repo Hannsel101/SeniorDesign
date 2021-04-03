@@ -7,16 +7,16 @@ const Batteryinfo = () => {
 
     return (
         <View style={styles.container}>
-            <Image style={{ width: 90, height: 110 }}
+            <Image style={styles.batteryImage}
                 source={require('../assets/greenb.png')}
             />
-            <Image style={{ width: 90, height: 110 }}
+            <Image style={styles.batteryImage}
                 source={require('../assets/yellowb.png')}
             />
-            <Image style={{ width: 90, height: 110 }}
+            <Image style={styles.batteryImage}
                 source={require('../assets/redb.png')}
             />
-            <Image style={{ width: 90, height: 110 }}
+            <Image style={styles.batteryImage}
                 source={require('../assets/deadcell.png')}
             />
             <StatusBar
@@ -26,19 +26,19 @@ const Batteryinfo = () => {
             <StatusBar style="auto" />
 
             <TouchableOpacity style={styles.button}>
-                <Text style={{ color: 'black', textAlign: 'center', fontSize: 14, fontWeight: 'bold' }}> UBP: none </Text>
+                <Text style={styles.statusText}> UBP: none </Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.button}>
-                <Text style={{ color: 'black', textAlign: 'center', fontSize: 14, fontWeight: 'bold' }}> Charge: Unknown </Text>
+                <Text style={styles.statusText}> Charge: Unknown </Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.button}>
-                <Text style={{ color: 'black', textAlign: 'center', fontSize: 14, fontWeight: 'bold' }}> Temperature: Unknown  </Text>
+                <Text style={styles.statusText}> Temperature: Unknown  </Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.button}>
-                <Text style={{ color: 'black', textAlign: 'center', fontSize: 14, fontWeight: 'bold' }}> Health: Unknown </Text>
+                <Text style={styles.statusText}> Health: Unknown </Text>
             </TouchableOpacity>
         </View>
 
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     },
 
     button: {
-        width: 150,
+        width: 290,
         height: 80,
         left: 134,
         bottom: 320,
@@ -65,6 +65,18 @@ const styles = StyleSheet.create({
         marginVertical: 10
 
     },
+    statusText: {
+        color: 'black',
+        textAlign: 'left',
+        fontSize: 14,
+        fontWeight: 'bold',
+        padding: 30
+
+    },
+    batteryImage: {
+        width: 90,
+        height: 110,
+    }
 
 });
 export default Batteryinfo
