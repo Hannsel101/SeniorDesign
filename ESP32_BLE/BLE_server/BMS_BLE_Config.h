@@ -16,7 +16,7 @@
 
 // Sensor Pins
 #define TEMP 17
-#define VOLT 37
+#define VOLT 38
 #define CURR 38
 #define BATS 39
 
