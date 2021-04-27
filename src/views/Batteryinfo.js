@@ -16,56 +16,77 @@ const images = {
 export default class just extends Component {
 // intial states
     state = {
-        Charge: 10,
-        Health: 'Good',
-        img: images.batteryimage.green,
-        NumbHolder: 1,
-        UBP_check:'Click battery',
-        tempchecker:0,
+        Charge: [0, 0, 0],
+        Health: ['Not Available', 'Not Available', 'Not Available'],
+        battImage: [ images.batteryimage.dead, images.batteryimage.dead, images.batteryimage.dead],
+        UBP_check: 0,
+        tempchecker: [0, 0, 0],
     }
     constructor() {
         super()
 
     }
     battery1 = () =>{
-        this.setState({UBP_check: 1})
+        this.setState({UBP_check: 0})
     }
     battery2 = () =>{
-        this.setState({UBP_check: 2})
+        this.setState({UBP_check: 1})
     }
     battery3 = () =>{
-        this.setState({UBP_check: 3})
+        this.setState({UBP_check: 2})
     }
 
     // generates random number between 1-100
     RandomNumGenerator = () => {
         var RandNumb = Math.floor(Math.random() * 100) + 1; // status of charge
-        this.setState({ NumbHolder: RandNumb })      
-        if (RandNumb >= 66 ) {
-            this.setState({ img: images.batteryimage.green })   
+        
+        // Update the charge of the chosen battery to view
+        const newCharge = [...this.state.Charge];
+        newCharge[this.state.UBP_check] = RandNumb;
+        this.setState({ Charge: newCharge })
+        
+
+        // Update the battery image of the chosen battery to view
+        const newImage = [...this.state.battImage];
+
+        if (RandNumb >= 75 ) {
+            newImage[this.state.UBP_check] = images.batteryimage.green;   
         }
-        else if (RandNumb >= 33) {
-            this.setState({ img: images.batteryimage.yellow })   
+        else if (RandNumb >= 25) {
+            newImage[this.state.UBP_check] = images.batteryimage.yellow;   
+        }
+        else if (RandNumb >= 5) {
+            newImage[this.state.UBP_check] = images.batteryimage.red;
         }
         else {
-            this.setState({ img: images.batteryimage.dead })
+            newImage[this.state.UBP_check] = images.batteryimage.dead;
         }
+        this.setState({battImage: newImage})
+
+        // Update the temperature of the chosen battery to view
         this.TemperatureSetter()
     }
 
     // Based on Temperature -> Health gets changed
     TemperatureSetter = () => {
         var temp =  Math.floor(Math.random() * 100) + 1;    // temperature
-        this.setState({tempchecker: temp})
+        
+        const newHealth = [...this.state.Health]
+        const newTemp = [...this.state.tempchecker]
+
+        newTemp[this.state.UBP_check] = temp;
+        
         if (temp >= 70){
-            this.setState({ Health: 'Poor' })    // if temp >= 70 : Health = Poor
+            newHealth[this.state.UBP_check] = 'Poor'   // if temp >= 70 : Health = Poor
         }
         else if (temp >= 30){
-            this.setState({ Health: 'Average' })  // if temp >= 30 : Health = Average
+            newHealth[this.state.UBP_check] = 'Average'  // if temp >= 30 : Health = Average
         }
         else{
-            this.setState({ Health: 'Good' })     // otherwise Health: Good
-        }        
+            newHealth[this.state.UBP_check] = 'Good'     // otherwise Health: Good
+        }     
+        this.setState({tempchecker: newTemp})
+        this.setState({Health: newHealth})   
     }
 
 // 
@@ -82,17 +103,17 @@ export default class just extends Component {
                 />
                  <TouchableOpacity onPress={this.battery1} >
                     <Image style={styles.batteryImage}      // changeable image
-                    source={this.state.img}/> 
+                    source={this.state.battImage[0]}/> 
                  </TouchableOpacity>
                 
                 <TouchableOpacity onPress={this.battery2}>
                     <Image style={styles.batteryImage}      // second battery img
-                    source={require('../assets/redb.png')} />                     
+                    source={this.state.battImage[1]} />                     
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={this.battery3} >
                     <Image style={styles.batteryImage}      // third battery img
-                    source={require('../assets/deadcell.png')} />
+                    source={this.state.battImage[2]} />
                 </TouchableOpacity>
 
                 <StatusBar
@@ -103,19 +124,19 @@ export default class just extends Component {
                 
                     
                 <TouchableHighlight style={styles.button}>   
-                    <Text style={styles.statusText}> UBP: {this.state.UBP_check} </Text>
+                    <Text style={styles.statusText}> UBP: {this.state.UBP_check + 1} </Text>
                 </TouchableHighlight>
 
                 <TouchableHighlight style={styles.button}>
-                    <Text style={styles.statusText}> Charge: {this.state.NumbHolder} % </Text>
+                    <Text style={styles.statusText}> Charge: {this.state.Charge[this.state.UBP_check]} % </Text>
                 </TouchableHighlight>
 
                 <TouchableHighlight style={styles.button}>
-                    <Text style={styles.statusText}> Temperature: {this.state.tempchecker}{'\u00b0'}C </Text>
+                    <Text style={styles.statusText}> Temperature: {this.state.tempchecker[this.state.UBP_check]}{'\u00b0'}C </Text>
                 </TouchableHighlight>
 
                 <TouchableHighlight style={styles.button}>
-                    <Text style={styles.statusText}> Health: {this.state.Health}  </Text>
+                    <Text style={styles.statusText}> Health: {this.state.Health[this.state.UBP_check]}  </Text>
                 </TouchableHighlight> 
 
 
