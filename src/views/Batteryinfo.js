@@ -1,6 +1,16 @@
 import { Component } from "react";
 import React from 'react'
-import { TouchableOpacity, Text, View, StatusBar, Image, StyleSheet, TouchableHighlight, Button } from 'react-native'
+import { TouchableOpacity,
+    Modal,
+    Text, 
+    View, 
+    StatusBar, 
+    Image, 
+    StyleSheet, 
+    TouchableHighlight, 
+    Button, 
+    Alert } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 
 const images = {
     batteryimage: {
@@ -12,7 +22,6 @@ const images = {
 
 };
 
-
 export default class just extends Component {
 // intial states
     state = {
@@ -21,8 +30,9 @@ export default class just extends Component {
         battImage: [ images.batteryimage.dead, images.batteryimage.dead, images.batteryimage.dead],
         UBP_check: 0,
         tempchecker: [0, 0, 0],
-    }
-    constructor() {
+        check_alert: [false, false, false],
+    } 
+    constructor() { 
         super()
 
     }
@@ -44,7 +54,6 @@ export default class just extends Component {
         const newCharge = [...this.state.Charge];
         newCharge[this.state.UBP_check] = RandNumb;
         this.setState({ Charge: newCharge })
-        
 
         // Update the battery image of the chosen battery to view
         const newImage = [...this.state.battImage];
@@ -60,6 +69,29 @@ export default class just extends Component {
         }
         else {
             newImage[this.state.UBP_check] = images.batteryimage.dead;
+            
+            const newalert = [...this.state.check_alert];
+            if(!newalert[this.state.UBP_check]){
+                // Update the alert array so that the message isnt displayed more than once
+                newalert[this.state.UBP_check] = true;
+                this.setState({check_alert: newalert})
+
+                // Display an alert to the user with the option to go directly to the navigation
+                // page or to stay on the current page
+                Alert.alert( 
+                    'Warning',
+                    'Please stop by a battery swapping station immediately',
+                    [ 
+                        {
+                            text: 'Find Swapping Station',
+                            onPress: () => {Actions.location()}
+                        },
+                        {
+                            text: 'OK',
+                        }
+                    ]
+                )
+            }
         }
         this.setState({battImage: newImage})
 
@@ -96,6 +128,7 @@ export default class just extends Component {
         return (
 
             <View style={styles.container}>
+                
 
                 <Button
                     title="Update Status"
