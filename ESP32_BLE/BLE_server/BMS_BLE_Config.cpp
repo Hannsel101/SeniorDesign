@@ -194,7 +194,7 @@ void BLE_Server::setCharacteristics()
   arr[14] = '\0';
   //test[0] = (UBP2.voltage >> 8) & 0b11111111;
   //test[1] = UBP2.voltage & 0b11111111;
-  batteryStatusCharacteristic->setValue(arr);
+  batteryStatusCharacteristic->setValue("Hello");
 
   // Set callback functions that are handled when a value is read or written to
   // For each characteristic

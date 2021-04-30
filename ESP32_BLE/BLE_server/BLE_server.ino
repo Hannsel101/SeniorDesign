@@ -78,18 +78,18 @@ void loop() {
   // accept commands at any moment
   if(BMS_BLE.connectionActive())
   {
-      uint8_t val = 0;
+      //uint8_t val = 0;
       
       // Update LCD to show readings
       drawConnected();
 
-      while(BMS_BLE.connectionActive())
-      {
-        BMS_BLE.sendUpdate(val);
-        val++;
-        break;
-        delay(100);
-      }
+      //while(BMS_BLE.connectionActive())
+      //{
+        //BMS_BLE.sendUpdate(val);
+        //val++;
+        //break;
+        //delay(100);
+      //}
       drawSensorReadings(5,5,t);
   }
   else

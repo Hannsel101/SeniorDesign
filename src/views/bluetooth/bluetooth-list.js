@@ -102,9 +102,28 @@ function BluetoothList(props)
                 // successfully retrieved services
                 console.log("Service UUID: ", peripheralInfo.services[2])
 
-                BleManager.getConnectedPeripherals([]).then((peripheralsArray) => {
-                    // Successfully got connected peripherals
-                    console.log("Connected peripherals: " + peripheralsArray.length);
+                var service = peripheralInfo.services[2].uuid;
+                var statusChar = '5ae13f53-46ad-4fce-a27b-03ffe6ad9d75';
+                var commandChar = '24a2a282-5fd5-4262-8490-a465ab0d9413';
+
+                //BleManager.writeWithoutResponse(macAddress, service, commandChar,
+                //[50]).then(() => {
+                    // Sucessfully sent a command
+                  //  console.log("Wrote: 1");
+                //})
+                //.catch((error) => {
+                    // We are failures
+                  //  console.log(error);
+                //});
+
+                BleManager.read(macAddress, service, statusChar)
+                .then((readData) => {
+                    // Successfully read the battery status
+                    console.log("Read: " + readData);
+                })
+                .catch((error) => {
+                    // We are failures
+                    console.log(error);
                 });
 
             });
