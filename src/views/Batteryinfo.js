@@ -7,8 +7,8 @@ import { TouchableOpacity,
     StatusBar, 
     Image, 
     StyleSheet, 
-    TouchableHighlight, 
-    Button, 
+    TouchableHighlight,
+    Button,
     Alert } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 

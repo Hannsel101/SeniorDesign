@@ -12,7 +12,6 @@ import Login from '../views/Login.js';
 import BluetoothList from '../views/bluetooth/bluetooth-list';
 import Test from '../views/test.js';
 import SearchBar from '../views/SearchBar';
-import Google from '../views/Google';
 import Batteryinfo from '../views/Batteryinfo';
 
 const Routes = () => (
@@ -30,7 +29,6 @@ const Routes = () => (
             <Scene key="Login" component={Login} title="Login" />
             <Scene key="about" component={About} title="About" />
             <Scene key="test" component={Test} title="Test" />
-            <Scene key="google" component={Google} title="Google" />
             <Scene key="batteryinfo" component={Batteryinfo} title="Batteryinfo"   />
         </Scene>
     </Router>

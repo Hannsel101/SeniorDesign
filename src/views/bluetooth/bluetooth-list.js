@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, NativeEventEmitter, PermissionsAndroid, Platform, NativeModules, Alert } from 'react-native';
+import { View, 
+    Text, 
+    FlatList, 
+    NativeEventEmitter, 
+    PermissionsAndroid, 
+    Platform, 
+    NativeModules, 
+    Alert } from 'react-native';
+
 import Layout from './bluetooth-list-layout';
 import Empty from './Empty.js';
 import Toggle from './Toggle.js';
@@ -78,8 +86,34 @@ function BluetoothList(props)
      */
     const renderEmpty = () => <Empty text='No Devices within range' />
     const renderItem = ({ item }) => {
-        return <Device {...item} iconLeft={require('../../assets/sportsCar.png')} iconRight={require('../../assets/bluetoothSettings.png')}/>
+        return <Device {...item} onPress={ () => connectToPeripheral(item.id)}  iconLeft={require('../../assets/sportsCar.png')} iconRight={require('../../assets/bluetoothSettings.png')}/>
     };
+
+    /** Connect to the peripheral selected from the list */
+    const connectToPeripheral = (macAddress) => {
+        BleManager.connect(macAddress)
+        .then(() => {
+            // Successfully connected
+            console.log("Connected to " + macAddress)
+
+            // Retrieve the services available
+            BleManager.retrieveServices(macAddress)
+            .then((peripheralInfo) => {
+                // successfully retrieved services
+                console.log("Service UUID: ", peripheralInfo.services[2])
+
+                BleManager.getConnectedPeripherals([]).then((peripheralsArray) => {
+                    // Successfully got connected peripherals
+                    console.log("Connected peripherals: " + peripheralsArray.length);
+                });
+
+            });
+        })
+        .catch((error) => {
+            // Failed to connect
+            console.log("Unable to connect!")
+        })
+    }
 
     /** Disconnecting from a peripheral */
     const handleDisconnectedPeripheral = (data) => {
@@ -201,11 +235,11 @@ function BluetoothList(props)
         <Layout title='Bluetooth Status'>
             <Toggle value={bolEnable} onValueChange={toggleBluetooth}/>
             <Subtitle title='Devices Found'/>
-            <FlatList 
+            <FlatList
                 data={list}
                 ListEmptyComponent={renderEmpty}
                 renderItem={renderItem}
-                keyExtractor={item => item.id}
+                keyExtractor={(item) => item.id}
             />
         </Layout>
     )
