@@ -1,7 +1,6 @@
 import { Component } from "react";
 import React from 'react'
 import { TouchableOpacity,
-    Modal,
     Text, 
     View, 
     StatusBar, 
@@ -12,13 +11,14 @@ import { TouchableOpacity,
     Alert } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import {readBLE, writeBLE} from './bluetooth/bluetooth-list';
-import { Transitioning } from "react-native-reanimated";
 
+
+// Images for battery cells used to indicate percentage of charge
 const images = {
     batteryimage: {
-        green: require('../assets/greenb.png'), // >= 75
-        yellow: require('../assets/yellowb.png'), // >= 50
-        red: require('../assets/redb.png'), // > = 25
+        green: require('../assets/greenb.png'),
+        yellow: require('../assets/yellowb.png'), 
+        red: require('../assets/redb.png'),
         dead: require('../assets/deadcell.png')
     }
 
@@ -39,11 +39,9 @@ export default class just extends Component {
     } 
     constructor() { 
         super()
-
     }
-
-    // Function that allows sending UBP commands from the phone to the embedded system through
-    // BLE.
+    //================================================================================================================
+    // Function that allows sending UBP commands from the phone to be communicated to the embedded system through BLE.
     batteryGUI = (battNum) => {
         var newSelected = [...this.state.UBP_Selected];
         var newCommand = this.state.UBP_Command;
@@ -60,28 +58,12 @@ export default class just extends Component {
         this.setState({UBP_Selected: newSelected});
         writeBLE([newCommand]);
     }
-
-
-    battery1 = () =>{
-        var newSelected = [...this.state.UBP_Selected]
-        // FINISHING THE COMMANDS FOR MULTIBATTERY SELECTION
-        // AND DESELECTION. JUST FINISHED MAKING THIS PART BUT NEED
-        // TO ADD THE STUFF FOR THE OTHER TWO BATTERIES IN ORDER
-        // TO MAKE IT BETTER. ALSO THESE THREE FUNCTIONS CAN BE MADE
-        // INTO ONE FUNCTION INSTREAD OF THREE. JUST PASS IN A BATTERY
-        // NUMBER AND OUR CODE WILL BE REDUCED BY SEVERAL LINES
-        this.setState({UBP_check: 0})
-        writeBLE([49]);   
+    //----------------------------------------------------------------------------------------------------------------
+    // Function for reading in UBP status updates through BLE from the embedded system
+    readStatusUpdate = () => {
+        readBLE();
     }
-    battery2 = () =>{
-        this.setState({UBP_check: 1})
-        writeBLE([50]);
-    }
-    battery3 = () =>{
-        this.setState({UBP_check: 2})
-        writeBLE([52]);
-    }
-
+    //================================================================================================================
 
     // generates random number between 1-100
     RandomNumGenerator = () => {
@@ -161,8 +143,7 @@ export default class just extends Component {
         this.setState({Health: newHealth})   
     }
 
-// 
-
+    // Code that handles the actual rendering of objects created above.
     render() {
 
         return (
@@ -172,7 +153,7 @@ export default class just extends Component {
 
                 <Button
                     title="Update Status"
-                    onPress={this.RandomNumGenerator}  // update button
+                    onPress={this.readStatusUpdate}  // update button
                 />
                  <TouchableOpacity onPress={() => this.batteryGUI(0)} >
                     <Image style={styles.batteryImage}      // changeable image
@@ -266,27 +247,3 @@ const styles = StyleSheet.create({
     }
 
 });
-/** */
-/**
- *                 <Button
-                    title="Update state"
-                    onPress={this.updateUsername} />
-                <Text>{this.state.username}</Text>
- *
- *
- *                  updateUsername = () => {
-        if (this.state.updateuser) {
-            this.setState({ username: 'Hannsel' })
-            this.setState({ updateuser: false })
-            this.setState({ blah: images.batteryimage.yellow })
-        }
-        else if (!this.state.updateuser) {
-            this.setState({ username: 'KIP' })
-            this.setState({ updateuser: true })
-            this.setState({ blah: images.batteryimage.red })
-        }
-    }
-
- * <button onClick={this.updateUsername}>Refresh name</button>
-                <> Username: {this.state.username}</>
- */

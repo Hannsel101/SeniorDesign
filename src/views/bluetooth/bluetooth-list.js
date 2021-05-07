@@ -16,15 +16,24 @@ import Device from './Device.js';
 import BleManager from 'react-native-ble-manager';
 import { Actions } from 'react-native-router-flux';
 
+// Global BLE variables for use throughout the application
+global.MAC = '';
+global.serviceID = '';
+global.statusChar = '5ae13f53-46ad-4fce-a27b-03ffe6ad9d75';
+global.commandChar = '24a2a282-5fd5-4262-8490-a465ab0d9413';
+global.statusUpdate = "";
 
+// BLE setup constants
 const BleManagerModule = NativeModules.BleManager;
 const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
 
+// Read data from the connected device
 export const readBLE = () => {
     BleManager.read(global.MAC, global.serviceID, global.statusChar)
                 .then((readData) => {
                     // Successfully read the battery status
-                    console.log("Read: " + readData);
+                    global.statusUpdate = binary2String(readData);
+                    console.log("Read: " + global.statusUpdate);
                 })
                 .catch((error) => {
                     //We are failures
@@ -32,6 +41,7 @@ export const readBLE = () => {
                 });
 }
 
+// Write data to the connected device
 export const writeBLE = (command) => {
     BleManager.writeWithoutResponse(global.MAC, global.serviceID, global.commandChar,
                 command).then(() => {
@@ -43,18 +53,20 @@ export const writeBLE = (command) => {
                     console.log(error);
                 });
 }
-
-
+//==========================================================================================
+//==========================================================================================
+// Parse binary data passed through BLE into ASCII characters
+function binary2String(input){
+    return String.fromCharCode.apply(null, input);
+}
+//==========================================================================================
+//==========================================================================================
 function BluetoothList(props)
 {
     const [isScanning, setIsScanning] = useState(false);
     const peripherals = new Map();
     const [list, setList] = useState([]);
     const [bolEnable, setBolEnable] = useState(false);
-    global.MAC = '';
-    global.serviceID = '';
-    global.statusChar = '5ae13f53-46ad-4fce-a27b-03ffe6ad9d75';
-    global.commandChar = '24a2a282-5fd5-4262-8490-a465ab0d9413';
 
     /** Enable and disabling the BLE controller via GUI slider */
     const enableBluetooth = async () => {
@@ -95,7 +107,7 @@ function BluetoothList(props)
     /**Function to handle scanning */
     const startScan = () => {
         if(!isScanning){
-            BleManager.scan([], 5, true).then((results) => {
+            BleManager.scan([], 2, true).then((results) => {
                 console.log('Scanning...');
                 setIsScanning(true);
             }).catch(err => {
