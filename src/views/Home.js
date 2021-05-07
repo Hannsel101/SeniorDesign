@@ -31,7 +31,7 @@ const Home = () => {
     return (
         <View style={styles.container}>
             <Video
-          source={require("./../assets/video3.mp4")}
+          source={require("./../assets/video4.mp4")}
           style={styles.backgroundVideo}
           muted={true}
           repeat={true}
