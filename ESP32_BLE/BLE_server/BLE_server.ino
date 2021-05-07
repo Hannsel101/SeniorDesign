@@ -7,12 +7,7 @@
 #include "BMS_BLE_Config.h"
 #include "OLED_Display.h"
 
-// Global Define used to set a polling rate for taking UPB readings and sending them over BLE 
-#define POLLING_RATE 1000
-
-// variables used for measuring time
-unsigned long startTime, currTime;
-
+// Initialize a DHT object for temperature and humidity readings
 DHT dht(TEMP, DHT11);
 
 void setup() {
@@ -54,50 +49,51 @@ void loop() {
 
 
   float h = dht.readHumidity();
+
   float t = dht.readTemperature();
   delay(50);
 
-  Serial.print("\nHumidity: ");
-  Serial.println(h);
-  Serial.print("Temperature: ");
-  Serial.println(t);
+  //Serial.print("\nHumidity: ");
+  //Serial.println(h);
+  //Serial.print("Temperature: ");
+  //Serial.println(t);
 
-  //int inRead = analogRead(VOLT);
   double inputVolt = ReadVoltage(38);
-  double bRes = 4096;
-
-  Serial.print("Raw: ");
-  Serial.println(inputVolt);
-
   inputVolt = inputVolt*11.18;
-  Serial.print("Voltage: ");
-  Serial.println(inputVolt);
+  //Serial.print("Voltage: ");
+  //Serial.println(inputVolt);
 
   
   // If connected to a central device then begin transmitting sensor data periodically and 
   // accept commands at any moment
   if(BMS_BLE.connectionActive())
-  {
-      //uint8_t val = 0;
-      
+  {    
       // Update LCD to show readings
-      drawConnected();
+      drawConnected(); 
+      drawSensorReadings(5, inputVolt, t);
+      String testTemp = String(t);
+      String testCharge;
 
-      //while(BMS_BLE.connectionActive())
-      //{
-        //BMS_BLE.sendUpdate(val);
-        //val++;
-        //break;
-        //delay(100);
-      //}
-      drawSensorReadings(5,5,t);
+      // Add a leading 0 for voltages under 10 volts
+      if(inputVolt < 10)
+        testCharge = "0" + String(inputVolt);
+      else
+        testCharge = String(inputVolt);
+      
+      // Add a leading 0 for tempature readings under 10 degrees celcius
+      if(t < 10)
+        testTemp = "0" + String(t);
+      else
+        testTemp = String(t);
+
+      BMS_BLE.sendUpdate(testCharge, testTemp);
   }
   else
   {
     drawDisconnected();
   }
   Heltec.display->display();
-  delay(1000);
+  delay(500);
 }
 
 
@@ -105,6 +101,5 @@ void loop() {
 double ReadVoltage(byte pin){
   double reading = analogRead(pin); // Reference voltage is 3v3 so maximum reading is 3v3 = 4095 in range 0 to 4095
   if(reading < 1 || reading > 4095) return 0;
-  // return -0.000000000009824 * pow(reading,3) + 0.000000016557283 * pow(reading,2) + 0.000854596860691 * reading + 0.065440348345433;
   return -0.000000000000016 * pow(reading,4) + 0.000000000118171 * pow(reading,3)- 0.000000301211691 * pow(reading,2)+ 0.001109019271794 * reading + 0.034143524634089;
 } // Added an improved polynomial, use either, comment out as required

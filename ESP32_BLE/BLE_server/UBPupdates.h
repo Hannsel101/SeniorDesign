@@ -18,7 +18,7 @@ typedef struct UBPupdate
 {
   uint8_t numBatteries = 0;
   uint8_t temperature = 0;
-  float voltage = 0;
-  float current = 0;
+  uint8_t voltage = 0;
+  uint8_t current = 0;
 };
  #endif

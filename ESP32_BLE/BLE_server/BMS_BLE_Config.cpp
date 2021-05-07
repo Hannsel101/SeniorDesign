@@ -47,6 +47,9 @@ class ServerCallbacks: public BLEServerCallbacks
  */
  class ServerCharacteristicCallback: public BLECharacteristicCallbacks 
  {
+   private:
+    float humidity, temperature;
+
   void onRead(BLECharacteristic* pCharacteristic)
   {
    Serial.println("Attempted to read");  
@@ -169,32 +172,16 @@ void BLE_Server::setCharacteristics()
                                          BLECharacteristic::PROPERTY_WRITE
                                        );                                    
 
-  // Set an initial value for the UBP status update while debugging
-  //batteryStatusCharacteristic->setValue("UBP Status Updates");
-  UBPupdate UBP2;
-  UBP2.voltage = 12.90;
-  char test[12];
-  float hel = 12.00;
-  String thisString = String(UBP2.voltage);
+
   char arr[15];
-  arr[0] = '2';
-  arr[1] = thisString[0];
-  arr[2] = thisString[1];
-  arr[3] = thisString[2];
-  arr[4] = thisString[3];
-  arr[5] = thisString[4];
-  arr[6] = '0';
-  arr[7] = '9';
-  arr[8] = '.';
-  arr[9] = '5';
-  arr[10] = '2';
-  arr[11] = '0';
-  arr[12] = '5';
-  arr[13] = '3';
-  arr[14] = '\0';
-  //test[0] = (UBP2.voltage >> 8) & 0b11111111;
-  //test[1] = UBP2.voltage & 0b11111111;
-  batteryStatusCharacteristic->setValue("Hello");
+  arr[0] = 'H';
+  arr[1] = 'E';
+  arr[2] = 'L';
+  arr[3] =  'L';
+  arr[4] = '0';
+  arr[5] = '\0';
+
+  batteryStatusCharacteristic->setValue(arr);
 
   // Set callback functions that are handled when a value is read or written to
   // For each characteristic
@@ -216,10 +203,27 @@ void BLE_Server::configAdvertising()
   //pAdvertising->setMinPreferred(0x12);
 }
 //---------------------------------------------------------------------------------//
-void BLE_Server::sendUpdate(uint8_t val)
+void BLE_Server::sendUpdate(String updateCharge, String updateTemp)
 {
-  batteryStatusCharacteristic->setValue((uint8_t*)&val, 4);
-  batteryStatusCharacteristic->notify();
+  char update[15];
+  int i=0;
+  for(; i<=updateCharge.length(); ++i)
+  {
+    if(i == updateCharge.length())
+      update[i] = ' ';
+    else
+      update[i] = updateCharge[i];
+  }
+
+  for(int k=0; k<updateTemp.length(); ++i, ++k)
+  {
+    if(k == updateTemp.length())
+      update[i] = '\0';
+    else
+      update[i] = updateTemp[k];
+  }
+
+  batteryStatusCharacteristic->setValue(update);
   delay(4);
 }
 //---------------------------------------------------------------------------------//

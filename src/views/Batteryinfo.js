@@ -64,7 +64,16 @@ export default class just extends Component {
         readBLE();
     }
     //================================================================================================================
+    // Update the UBP's tempature parameter
+    updateTemperature = () => {
 
+    }
+    //----------------------------------------------------------------------------------------------------------------
+    // Update the UBP's voltage paremeter
+    updateVoltage = () => {
+
+    }
+    //================================================================================================================
     // generates random number between 1-100
     RandomNumGenerator = () => {
         var RandNumb = Math.floor(Math.random() * 100) + 1; // status of charge
@@ -182,7 +191,7 @@ export default class just extends Component {
                 </TouchableHighlight>
 
                 <TouchableHighlight style={styles.button}>
-                    <Text style={styles.statusText}> Charge: {this.state.Charge[this.state.UBP_check]} % </Text>
+                    <Text style={styles.statusText}> Voltage: {this.state.Charge[this.state.UBP_check]} V </Text>
                 </TouchableHighlight>
 
                 <TouchableHighlight style={styles.button}>

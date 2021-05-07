@@ -107,7 +107,7 @@ function BluetoothList(props)
     /**Function to handle scanning */
     const startScan = () => {
         if(!isScanning){
-            BleManager.scan([], 2, true).then((results) => {
+            BleManager.scan([], 2.5, true).then((results) => {
                 console.log('Scanning...');
                 setIsScanning(true);
             }).catch(err => {

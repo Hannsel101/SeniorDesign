@@ -45,13 +45,11 @@ void drawSensorReadings(uint8_t health, float charge, float temperature)
   Heltec.display->setFont(ArialMT_Plain_10);
 
   // Add "Health: " and the status of health to the display buffer
-  health = 12;
   Heltec.display->drawString(3, 18, "Health: ");
   Heltec.display->drawString(43, 18, "Great");
 
   // Convert the status of charge from unsigned integer to string format
   // then add "Charge: " and the status of charge to the display buffer
-  charge = 80;
   String chargeS = String(charge);
   Heltec.display->drawString(3, 30, "Charge: ");
   Heltec.display->drawString(43, 30, String(chargeS + "%"));

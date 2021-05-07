@@ -57,7 +57,7 @@ class BLE_Server
     /*
      * Function to manually send a UBP update from the server without the client requesting the update
      */
-     void sendUpdate(uint8_t val);
+     void sendUpdate(String updateCharge, String updateTemp);
 
     private:
       BLEServer *pServer;
