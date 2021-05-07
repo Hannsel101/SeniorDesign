@@ -11,6 +11,8 @@ import { TouchableOpacity,
     Button,
     Alert } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import {readBLE, writeBLE} from './bluetooth/bluetooth-list';
+import { Transitioning } from "react-native-reanimated";
 
 const images = {
     batteryimage: {
@@ -29,27 +31,65 @@ export default class just extends Component {
         Health: ['Not Available', 'Not Available', 'Not Available'],
         battImage: [ images.batteryimage.dead, images.batteryimage.dead, images.batteryimage.dead],
         UBP_check: 0,
+        UBP_Selected: [false, false, false],
+        UBP_Command: 48,
         tempchecker: [0, 0, 0],
         check_alert: [false, false, false],
+        
     } 
     constructor() { 
         super()
 
     }
+
+    // Function that allows sending UBP commands from the phone to the embedded system through
+    // BLE.
+    batteryGUI = (battNum) => {
+        var newSelected = [...this.state.UBP_Selected];
+        var newCommand = this.state.UBP_Command;
+        this.setState({UBP_check: battNum});
+
+        newSelected[battNum] = !newSelected[battNum];
+        if(newSelected[battNum]){
+            newCommand += Math.pow(2, battNum);
+            this.setState({UBP_Command: newCommand});
+        }else{
+            newCommand -= Math.pow(2, battNum);
+            this.setState({UBP_Command: newCommand});
+        }
+        this.setState({UBP_Selected: newSelected});
+        writeBLE([newCommand]);
+    }
+
+
     battery1 = () =>{
+        var newSelected = [...this.state.UBP_Selected]
+        // FINISHING THE COMMANDS FOR MULTIBATTERY SELECTION
+        // AND DESELECTION. JUST FINISHED MAKING THIS PART BUT NEED
+        // TO ADD THE STUFF FOR THE OTHER TWO BATTERIES IN ORDER
+        // TO MAKE IT BETTER. ALSO THESE THREE FUNCTIONS CAN BE MADE
+        // INTO ONE FUNCTION INSTREAD OF THREE. JUST PASS IN A BATTERY
+        // NUMBER AND OUR CODE WILL BE REDUCED BY SEVERAL LINES
         this.setState({UBP_check: 0})
+        writeBLE([49]);   
     }
     battery2 = () =>{
         this.setState({UBP_check: 1})
+        writeBLE([50]);
     }
     battery3 = () =>{
         this.setState({UBP_check: 2})
+        writeBLE([52]);
     }
+
 
     // generates random number between 1-100
     RandomNumGenerator = () => {
         var RandNumb = Math.floor(Math.random() * 100) + 1; // status of charge
         
+        
+
+
         // Update the charge of the chosen battery to view
         const newCharge = [...this.state.Charge];
         newCharge[this.state.UBP_check] = RandNumb;
@@ -134,17 +174,17 @@ export default class just extends Component {
                     title="Update Status"
                     onPress={this.RandomNumGenerator}  // update button
                 />
-                 <TouchableOpacity onPress={this.battery1} >
+                 <TouchableOpacity onPress={() => this.batteryGUI(0)} >
                     <Image style={styles.batteryImage}      // changeable image
                     source={this.state.battImage[0]}/> 
                  </TouchableOpacity>
                 
-                <TouchableOpacity onPress={this.battery2}>
+                <TouchableOpacity onPress={() => this.batteryGUI(1)}>
                     <Image style={styles.batteryImage}      // second battery img
                     source={this.state.battImage[1]} />                     
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={this.battery3} >
+                <TouchableOpacity onPress={() => this.batteryGUI(2)} >
                     <Image style={styles.batteryImage}      // third battery img
                     source={this.state.battImage[2]} />
                 </TouchableOpacity>

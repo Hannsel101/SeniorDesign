@@ -13,11 +13,37 @@ import Empty from './Empty.js';
 import Toggle from './Toggle.js';
 import Subtitle from './Subtitle.js';
 import Device from './Device.js';
-import BluetoothSerial, { stopScanning } from 'react-native-bluetooth-serial-next';
 import BleManager from 'react-native-ble-manager';
+import { Actions } from 'react-native-router-flux';
+
 
 const BleManagerModule = NativeModules.BleManager;
 const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
+
+export const readBLE = () => {
+    BleManager.read(global.MAC, global.serviceID, global.statusChar)
+                .then((readData) => {
+                    // Successfully read the battery status
+                    console.log("Read: " + readData);
+                })
+                .catch((error) => {
+                    //We are failures
+                    console.log(error);
+                });
+}
+
+export const writeBLE = (command) => {
+    BleManager.writeWithoutResponse(global.MAC, global.serviceID, global.commandChar,
+                command).then(() => {
+                    // Sucessfully sent a command
+                    console.log("Wrote: a command");
+                })
+                .catch((error) => {
+                    // We are failures
+                    console.log(error);
+                });
+}
+
 
 function BluetoothList(props)
 {
@@ -25,6 +51,10 @@ function BluetoothList(props)
     const peripherals = new Map();
     const [list, setList] = useState([]);
     const [bolEnable, setBolEnable] = useState(false);
+    global.MAC = '';
+    global.serviceID = '';
+    global.statusChar = '5ae13f53-46ad-4fce-a27b-03ffe6ad9d75';
+    global.commandChar = '24a2a282-5fd5-4262-8490-a465ab0d9413';
 
     /** Enable and disabling the BLE controller via GUI slider */
     const enableBluetooth = async () => {
@@ -39,7 +69,6 @@ function BluetoothList(props)
             startScan();
             setBolEnable(true);
             setList(list);
-            stopScanning();
         } catch (error) {
             console.log(error);
         }
@@ -94,37 +123,18 @@ function BluetoothList(props)
         BleManager.connect(macAddress)
         .then(() => {
             // Successfully connected
-            console.log("Connected to " + macAddress)
+            global.MAC = macAddress;
+            console.log("Connected to " + global.MAC)
+            
 
             // Retrieve the services available
             BleManager.retrieveServices(macAddress)
             .then((peripheralInfo) => {
                 // successfully retrieved services
                 console.log("Service UUID: ", peripheralInfo.services[2])
+                global.serviceID = peripheralInfo.services[2].uuid;           
 
-                var service = peripheralInfo.services[2].uuid;
-                var statusChar = '5ae13f53-46ad-4fce-a27b-03ffe6ad9d75';
-                var commandChar = '24a2a282-5fd5-4262-8490-a465ab0d9413';
-
-                //BleManager.writeWithoutResponse(macAddress, service, commandChar,
-                //[50]).then(() => {
-                    // Sucessfully sent a command
-                  //  console.log("Wrote: 1");
-                //})
-                //.catch((error) => {
-                    // We are failures
-                  //  console.log(error);
-                //});
-
-                BleManager.read(macAddress, service, statusChar)
-                .then((readData) => {
-                    // Successfully read the battery status
-                    console.log("Read: " + readData);
-                })
-                .catch((error) => {
-                    // We are failures
-                    console.log(error);
-                });
+                Actions.batteryinfo()
 
             });
         })
@@ -150,70 +160,13 @@ function BluetoothList(props)
         console.log('Received data from ' + data.peripheral + ' characteristic ' + data.characteristic, data.value);
     }
 
-    /** Handle new connections and add them to the list */
-    const retrieveConnected = () => {
-        BleManager.getConnectedPeripherals([]).then((results) => {
-            if(results.length == 0) {
-                console.log('No connected peripherals')
-            }
-            console.log(results);
-            for(var i=0; i<results.length; i++) {
-                var peripheral = results[i];
-                peripheral.connected = true;
-                peripherals.set(peripheral.id, peripheral);
-                setList(Array.from(peripherals.values()));
-            }
-        });
-    }
-
     /** Handle newly discovered peripheral */
     const handleDiscoverPeripheral = (peripheral) => {
-        console.log('Got ble peripheral', peripheral);
         if (!peripheral.name) {
             peripheral.name = 'NO NAME';
         }
         peripherals.set(peripheral.id, peripheral);
         setList(Array.from(peripherals.values()));
-    }
-
-    /** Testing Function for connecting and disconnecting from peripherals */
-    const testPeripheral = (peripheral) => {
-        if (peripheral) {
-            if (peripheral.connected) {
-                BleManager.disconnect(peripheral.id);
-            } else {
-                BleManager.connect(peripheral.id).then(() => {
-                    let p = peripherals.get(peripheral.id);
-                    if (p) {
-                        p.connected = true;
-                        peripherals.set(peripheral.id, p);
-                        setList(Array.from(peripherals.values()));
-                    }
-                    console.log('Connected to ' + peripheral.id);
-
-
-                    setTimeout(() => {
-
-                        /* Test read current RSSI value */
-                        BleManager.retrieveServices(peripheral.id).then((peripheralData) => {
-                            console.log('Retrieved peripheral services', peripheralData);
-
-                            BleManager.readRSSI(peripheral.id).then((rssi) => {
-                                console.log('Retrieved actual RSSI value', rssi);
-                                let p = peripherals.get(peripheral.id);
-                                if (p) {
-                                    p.rssi = rssi;
-                                    peripherals.set(peripheral.id, p);
-                                    setList(Array.from(peripherals.values()));
-                                }
-                            });
-                        });
-                    }, 900);
-                }).catch((error) => {
-                    console.log('Connection error', error);
-                });
-            }
-        }
     }
 
     /** Mount Listeners and unmount them????? */
@@ -243,8 +196,8 @@ function BluetoothList(props)
 
         return (() => {
             console.log('unmount');
-            //bleManagerEmitter.removeListener('BleManagerDiscoverPeripheral', handleDiscoverPeripheral);
-            //bleManagerEmitter.removeListener('BleManagerStopScan', handleStopScan);
+            bleManagerEmitter.removeListener('BleManagerDiscoverPeripheral', handleDiscoverPeripheral);
+            bleManagerEmitter.removeListener('BleManagerStopScan', handleStopScan);
             //bleManagerEmitter.removeListener('BleManagerDisconnectPeripheral', handleDisconnectedPeripheral);
             //bleManagerEmitter.removeListener('BleManagerDidUpdateValueForCharacteristic', handleUpdateValueForCharacteristic);
         })
@@ -264,4 +217,5 @@ function BluetoothList(props)
     )
 
 }
+export {BleManager}
 export default BluetoothList
