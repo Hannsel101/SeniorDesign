@@ -1,7 +1,10 @@
 import React from 'react'
-import { StyleSheet, TouchableOpacity, Text, StatusBar, View, TextInput, Image } from 'react-native'
+import { StyleSheet, TouchableOpacity, Text, StatusBar, View, TextInput, Image, Dimensions } from 'react-native'
 import { Actions } from 'react-native-router-flux'
+import styled from "styled-components/native";
+import Video from "react-native-video";
 
+const { width, height } = Dimensions.get("window");
 const Home = () => {
     const goToBluetooth = () => {
         Actions.bluetooth()
@@ -27,6 +30,15 @@ const Home = () => {
 
     return (
         <View style={styles.container}>
+            <Video
+          source={require("./../assets/video3.mp4")}
+          style={styles.backgroundVideo}
+          muted={true}
+          repeat={true}
+          resizeMode={"cover"}
+          rate={1.0}
+          ignoreSilentSwitch={"obey"}
+        />
             <StatusBar
                 backgroundColor="#005661"
                 barStyle="light-content"
@@ -64,6 +76,14 @@ const Home = () => {
     )
 }
 const styles = StyleSheet.create({
+    backgroundVideo: {
+        height: height,
+        position: "absolute",
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0
+      },
     container: {
         flex: 1,
         backgroundColor: '#00838e',
