@@ -23,14 +23,14 @@ const History = () => {
         barStyle="light-content"
       />
       <Image style={{ width: 150, height: 150, justifyContent: 'center', alignItems: 'center' }}
-        source={require('../assets/batterhistory.png')}
+        source={require('../assets/batteryhistoryn.png')}
       />
       <TouchableOpacity >
         <Text style={{ color: 'white', textAlign: 'center', fontSize: 20, fontWeight: 'bold', }}>  Battery History </Text>
       </TouchableOpacity>
 
       <Image style={{ width: 150, height: 150, justifyContent: 'center', alignItems: 'center' }}
-        source={require('../assets/moneyhistory.png')}
+        source={require('../assets/moneyt.png')}
       />
 
       <TouchableOpacity >
