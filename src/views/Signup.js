@@ -111,7 +111,7 @@ const Signup = () => {
         </TouchableOpacity>
 
         <StatusBar
-          backgroundColor="#005661"
+          backgroundColor="#000000"
           barStyle="light-content"
         />
         <StatusBar style="auto" />

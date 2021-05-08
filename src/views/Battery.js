@@ -29,7 +29,7 @@ const Battery = () => {
         ignoreSilentSwitch={"obey"}
       />
       <StatusBar
-        backgroundColor="#005661"
+        backgroundColor="#000000"
         barStyle="light-content"
       />
       <Image style={{ width: 150, height: 150, justifyContent: 'center', alignItems: 'center' }}
