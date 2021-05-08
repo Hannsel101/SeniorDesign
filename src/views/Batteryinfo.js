@@ -74,22 +74,78 @@ export default class just extends Component {
     //================================================================================================================
     // Update the UBP's tempature parameter
     updateTemperature = () => {
-        var newCharge = [...this.state.Charge];
-        newCharge[0] = global.statusUpdate;
-        this.setState({Charge: newCharge})
+        var newTemp = [...this.state.tempchecker];
+
+        var newUpdates = global.statusUpdate;
+        var splitVar = newUpdates.split(' ');
+        newTemp[this.state.UBP_check] = splitVar[1];
+        this.setState({tempchecker: newTemp})
+
+        const newHealth = [...this.state.Health]
+
+        if (splitVar[1] >= 70) {
+            newHealth[this.state.UBP_check] = 'Poor'   // if temp >= 70 : Health = Poor
+        }
+        else if (splitVar[1] >= 30) {
+            newHealth[this.state.UBP_check] = 'Average'  // if temp >= 30 : Health = Average
+        }
+        else {
+            newHealth[this.state.UBP_check] = 'Good'     // otherwise Health: Good
+        }
+        this.setState({ Health: newHealth })
+
+
+        this.updateVoltage(splitVar[0]);
     }
     //----------------------------------------------------------------------------------------------------------------
     // Update the UBP's voltage paremeter
-    updateVoltage = () => {
-        // Wait for BLE to be done reading data
-        while(!global.readDone){}
-        if(global.readDone){
-            console.log("done volt")
-        }
+    updateVoltage = (voltUpdate) => {
+        var newVolt = [...this.state.Charge]
 
-        var statusUpdate = "Hello did I split?";
-        var splitUpdate = statusUpdate.split(' ');
-        console.log("Did it split: " + splitUpdate);
+
+        // Update the battery image of the chosen battery to view
+        const newImage = [...this.state.battImage];
+
+        if (Number(voltUpdate) >= 4.52) {
+            newImage[this.state.UBP_check] = images.batteryimage.green;
+        }
+        else if (Number(voltUpdate) >= 4.40) {
+            newImage[this.state.UBP_check] = images.batteryimage.yellow;
+        }
+        else if (Number(voltUpdate) >= 4.2) {
+            newImage[this.state.UBP_check] = images.batteryimage.red;
+        }
+        else {
+            newImage[this.state.UBP_check] = images.batteryimage.dead;
+
+            const newalert = [...this.state.check_alert];
+            if (!newalert[this.state.UBP_check]) {
+                // Update the alert array so that the message isnt displayed more than once
+                newalert[this.state.UBP_check] = true;
+                this.setState({ check_alert: newalert })
+
+                // Display an alert to the user with the option to go directly to the navigation
+                // page or to stay on the current page
+                Alert.alert(
+                    'Warning',
+                    'Please stop by a battery swapping station immediately',
+                    [
+                        {
+                            text: 'Find Swapping Station',
+                            onPress: () => { Actions.location() }
+                        },
+                        {
+                            text: 'OK',
+                        }
+                    ]
+                )
+            }
+        }
+        this.setState({ battImage: newImage })
+
+
+        newVolt[this.state.UBP_check] = voltUpdate;
+        this.setState({Charge: newVolt});
     }
     //================================================================================================================
     // generates random number between 1-100
@@ -232,24 +288,12 @@ export default class just extends Component {
 
 }
 const styles = StyleSheet.create({
-    backgroundVideo: {
-        height: height,
-        position: "absolute",
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0
-    },
     image: {
-        
         resizeMode: "cover",
-        
     },
 
     container: {
         flex: 1,
-        backgroundColor: '#00838e',
-
     },
 
     button: {
@@ -264,7 +308,6 @@ const styles = StyleSheet.create({
         color: '#212121',
         justifyContent: 'center',
         marginVertical: 10
-
     },
 
     statusText: {
@@ -273,7 +316,6 @@ const styles = StyleSheet.create({
         fontSize: 17,
         fontWeight: 'bold',
         padding: 30
-
     },
     batteryImage: {
         width: 90,
@@ -284,7 +326,6 @@ const styles = StyleSheet.create({
     scrollView: {
         flex: 1,
         color: 'black',
-
     }
 
 });
