@@ -10,24 +10,23 @@ import {
     TouchableHighlight,
     Button,
     Alert,
-    
+    Dimensions,
+    ImageBackground
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { readBLE, writeBLE } from './bluetooth/bluetooth-list';
 import styled from "styled-components/native";
 import Video from "react-native-video";
-
-
-
-
+const { width, height } = Dimensions.get("window");
+const img = require('../assets/start.png');
 
 // Images for battery cells used to indicate percentage of charge
 const images = {
     batteryimage: {
-        green: require('../assets/greenb.png'),
-        yellow: require('../assets/yellowb.png'),
-        red: require('../assets/redb.png'),
-        dead: require('../assets/deadcell.png')
+        green: require('../assets/greenbatt.png'),
+        yellow: require('../assets/yellowbatt.png'),
+        red: require('../assets/redbatt.png'),
+        dead: require('../assets/deadbatt.png')
     }
 
 };
@@ -166,52 +165,52 @@ export default class just extends Component {
         return (
 
             <View style={styles.container}>
+                <ImageBackground source={img} style={styles.image}>
+
+                    <Button
+                        title="Update Status"
+                        onPress={this.readStatusUpdate}  // update button
+                    />
+                    <TouchableOpacity onPress={() => this.batteryGUI(0)} >
+                        <Image style={styles.batteryImage}      // changeable image
+                            source={this.state.battImage[0]} />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => this.batteryGUI(1)}>
+                        <Image style={styles.batteryImage}      // second battery img
+                            source={this.state.battImage[1]} />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => this.batteryGUI(2)} >
+                        <Image style={styles.batteryImage}      // third battery img
+                            source={this.state.battImage[2]} />
+                    </TouchableOpacity>
+
+                    <StatusBar
+                        backgroundColor="#005661"
+                        barStyle="light-content"                // status bar
+                    />
+                    <StatusBar style="auto" />
 
 
-                <Button
-                    title="Update Status"
-                    onPress={this.readStatusUpdate}  // update button
-                />
-                <TouchableOpacity onPress={() => this.batteryGUI(0)} >
-                    <Image style={styles.batteryImage}      // changeable image
-                        source={this.state.battImage[0]} />
-                </TouchableOpacity>
+                    <TouchableHighlight style={styles.button}>
+                        <Text style={styles.statusText}> UBP: {this.state.UBP_check + 1} </Text>
+                    </TouchableHighlight>
 
-                <TouchableOpacity onPress={() => this.batteryGUI(1)}>
-                    <Image style={styles.batteryImage}      // second battery img
-                        source={this.state.battImage[1]} />
-                </TouchableOpacity>
+                    <TouchableHighlight style={styles.button}>
+                        <Text style={styles.statusText}> Voltage: {this.state.Charge[this.state.UBP_check]} V </Text>
+                    </TouchableHighlight>
 
-                <TouchableOpacity onPress={() => this.batteryGUI(2)} >
-                    <Image style={styles.batteryImage}      // third battery img
-                        source={this.state.battImage[2]} />
-                </TouchableOpacity>
+                    <TouchableHighlight style={styles.button}>
+                        <Text style={styles.statusText}> Temperature: {this.state.tempchecker[this.state.UBP_check]}{'\u00b0'}C </Text>
+                    </TouchableHighlight>
 
-                <StatusBar
-                    backgroundColor="#005661"
-                    barStyle="light-content"                // status bar
-                />
-                <StatusBar style="auto" />
+                    <TouchableHighlight style={styles.button}>
+                        <Text style={styles.statusText}> Health: {this.state.Health[this.state.UBP_check]}  </Text>
+                    </TouchableHighlight>
 
 
-                <TouchableHighlight style={styles.button}>
-                    <Text style={styles.statusText}> UBP: {this.state.UBP_check + 1} </Text>
-                </TouchableHighlight>
-
-                <TouchableHighlight style={styles.button}>
-                    <Text style={styles.statusText}> Voltage: {this.state.Charge[this.state.UBP_check]} V </Text>
-                </TouchableHighlight>
-
-                <TouchableHighlight style={styles.button}>
-                    <Text style={styles.statusText}> Temperature: {this.state.tempchecker[this.state.UBP_check]}{'\u00b0'}C </Text>
-                </TouchableHighlight>
-
-                <TouchableHighlight style={styles.button}>
-                    <Text style={styles.statusText}> Health: {this.state.Health[this.state.UBP_check]}  </Text>
-                </TouchableHighlight>
-
-
-
+                </ImageBackground>
 
 
             </View>
@@ -222,6 +221,19 @@ export default class just extends Component {
 
 }
 const styles = StyleSheet.create({
+    backgroundVideo: {
+        height: height,
+        position: "absolute",
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0
+    },
+    image: {
+        
+        resizeMode: "cover",
+        justifyContent: "center"
+    },
 
     container: {
         flex: 1,
@@ -233,7 +245,7 @@ const styles = StyleSheet.create({
         width: 290,
         height: 120,
         left: 160,
-        bottom: 520,
+        bottom: 420,
         backgroundColor: '#ededed',
         borderRadius: 40,
         paddingHorizontal: 16,
@@ -254,7 +266,7 @@ const styles = StyleSheet.create({
     },
     batteryImage: {
         width: 90,
-        top: 40,
+        top: 130,
         left: 35,
         height: 180,
     },
