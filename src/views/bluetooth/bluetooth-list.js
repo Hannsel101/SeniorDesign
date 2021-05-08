@@ -22,6 +22,7 @@ global.serviceID = '';
 global.statusChar = '5ae13f53-46ad-4fce-a27b-03ffe6ad9d75';
 global.commandChar = '24a2a282-5fd5-4262-8490-a465ab0d9413';
 global.statusUpdate = "";
+global.readDone = false;
 
 // BLE setup constants
 const BleManagerModule = NativeModules.BleManager;
@@ -34,6 +35,7 @@ export const readBLE = () => {
                     // Successfully read the battery status
                     global.statusUpdate = binary2String(readData);
                     console.log("Read: " + global.statusUpdate);
+                    global.readDone = true;
                 })
                 .catch((error) => {
                     //We are failures

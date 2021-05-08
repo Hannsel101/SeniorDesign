@@ -69,16 +69,27 @@ export default class just extends Component {
     // Function for reading in UBP status updates through BLE from the embedded system
     readStatusUpdate = () => {
         readBLE();
+        this.updateTemperature();
     }
     //================================================================================================================
     // Update the UBP's tempature parameter
     updateTemperature = () => {
-
+        var newCharge = [...this.state.Charge];
+        newCharge[0] = global.statusUpdate;
+        this.setState({Charge: newCharge})
     }
     //----------------------------------------------------------------------------------------------------------------
     // Update the UBP's voltage paremeter
     updateVoltage = () => {
+        // Wait for BLE to be done reading data
+        while(!global.readDone){}
+        if(global.readDone){
+            console.log("done volt")
+        }
 
+        var statusUpdate = "Hello did I split?";
+        var splitUpdate = statusUpdate.split(' ');
+        console.log("Did it split: " + splitUpdate);
     }
     //================================================================================================================
     // generates random number between 1-100
