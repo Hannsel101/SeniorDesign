@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     image: {
         
         resizeMode: "cover",
-        justifyContent: "center"
+        
     },
 
     container: {
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
         width: 290,
         height: 120,
         left: 160,
-        bottom: 420,
+        bottom: 530,
         backgroundColor: '#ededed',
         borderRadius: 40,
         paddingHorizontal: 16,
@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
     },
     batteryImage: {
         width: 90,
-        top: 130,
+        top: 30,
         left: 35,
         height: 180,
     },
