@@ -1,43 +1,50 @@
 import { Component } from "react";
 import React from 'react'
-import { TouchableOpacity,
-    Text, 
-    View, 
-    StatusBar, 
-    Image, 
-    StyleSheet, 
+import {
+    TouchableOpacity,
+    Text,
+    View,
+    StatusBar,
+    Image,
+    StyleSheet,
     TouchableHighlight,
     Button,
-    Alert } from 'react-native';
+    Alert,
+    Dimensions,
+    ImageBackground
+} from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import {readBLE, writeBLE} from './bluetooth/bluetooth-list';
-
+import { readBLE, writeBLE } from './bluetooth/bluetooth-list';
+import styled from "styled-components/native";
+import Video from "react-native-video";
+const { width, height } = Dimensions.get("window");
+const img = require('../assets/start.png');
 
 // Images for battery cells used to indicate percentage of charge
 const images = {
     batteryimage: {
-        green: require('../assets/greenb.png'),
-        yellow: require('../assets/yellowb.png'), 
-        red: require('../assets/redb.png'),
-        dead: require('../assets/deadcell.png')
+        green: require('../assets/greenbatt.png'),
+        yellow: require('../assets/yellowbatt.png'),
+        red: require('../assets/redbatt.png'),
+        dead: require('../assets/deadbatt.png')
     }
 
 };
 
 export default class just extends Component {
-// intial states
+    // intial states
     state = {
         Charge: [0, 0, 0],
         Health: ['Not Available', 'Not Available', 'Not Available'],
-        battImage: [ images.batteryimage.dead, images.batteryimage.dead, images.batteryimage.dead],
+        battImage: [images.batteryimage.dead, images.batteryimage.dead, images.batteryimage.dead],
         UBP_check: 0,
         UBP_Selected: [false, false, false],
         UBP_Command: 48,
         tempchecker: [0, 0, 0],
         check_alert: [false, false, false],
-        
-    } 
-    constructor() { 
+
+    }
+    constructor() {
         super()
     }
     //================================================================================================================
@@ -45,17 +52,17 @@ export default class just extends Component {
     batteryGUI = (battNum) => {
         var newSelected = [...this.state.UBP_Selected];
         var newCommand = this.state.UBP_Command;
-        this.setState({UBP_check: battNum});
+        this.setState({ UBP_check: battNum });
 
         newSelected[battNum] = !newSelected[battNum];
-        if(newSelected[battNum]){
+        if (newSelected[battNum]) {
             newCommand += Math.pow(2, battNum);
-            this.setState({UBP_Command: newCommand});
-        }else{
+            this.setState({ UBP_Command: newCommand });
+        } else {
             newCommand -= Math.pow(2, battNum);
-            this.setState({UBP_Command: newCommand});
+            this.setState({ UBP_Command: newCommand });
         }
-        this.setState({UBP_Selected: newSelected});
+        this.setState({ UBP_Selected: newSelected });
         writeBLE([newCommand]);
     }
     //----------------------------------------------------------------------------------------------------------------
@@ -88,8 +95,8 @@ export default class just extends Component {
     // generates random number between 1-100
     RandomNumGenerator = () => {
         var RandNumb = Math.floor(Math.random() * 100) + 1; // status of charge
-        
-        
+
+
 
 
         // Update the charge of the chosen battery to view
@@ -100,33 +107,33 @@ export default class just extends Component {
         // Update the battery image of the chosen battery to view
         const newImage = [...this.state.battImage];
 
-        if (RandNumb >= 75 ) {
-            newImage[this.state.UBP_check] = images.batteryimage.green;   
+        if (RandNumb >= 75) {
+            newImage[this.state.UBP_check] = images.batteryimage.green;
         }
         else if (RandNumb >= 25) {
-            newImage[this.state.UBP_check] = images.batteryimage.yellow;   
+            newImage[this.state.UBP_check] = images.batteryimage.yellow;
         }
         else if (RandNumb >= 5) {
             newImage[this.state.UBP_check] = images.batteryimage.red;
         }
         else {
             newImage[this.state.UBP_check] = images.batteryimage.dead;
-            
+
             const newalert = [...this.state.check_alert];
-            if(!newalert[this.state.UBP_check]){
+            if (!newalert[this.state.UBP_check]) {
                 // Update the alert array so that the message isnt displayed more than once
                 newalert[this.state.UBP_check] = true;
-                this.setState({check_alert: newalert})
+                this.setState({ check_alert: newalert })
 
                 // Display an alert to the user with the option to go directly to the navigation
                 // page or to stay on the current page
-                Alert.alert( 
+                Alert.alert(
                     'Warning',
                     'Please stop by a battery swapping station immediately',
-                    [ 
+                    [
                         {
                             text: 'Find Swapping Station',
-                            onPress: () => {Actions.location()}
+                            onPress: () => { Actions.location() }
                         },
                         {
                             text: 'OK',
@@ -135,7 +142,7 @@ export default class just extends Component {
                 )
             }
         }
-        this.setState({battImage: newImage})
+        this.setState({ battImage: newImage })
 
         // Update the temperature of the chosen battery to view
         this.TemperatureSetter()
@@ -143,24 +150,24 @@ export default class just extends Component {
 
     // Based on Temperature -> Health gets changed
     TemperatureSetter = () => {
-        var temp =  Math.floor(Math.random() * 100) + 1;    // temperature
-        
+        var temp = Math.floor(Math.random() * 100) + 1;    // temperature
+
         const newHealth = [...this.state.Health]
         const newTemp = [...this.state.tempchecker]
 
         newTemp[this.state.UBP_check] = temp;
-        
-        if (temp >= 70){
+
+        if (temp >= 70) {
             newHealth[this.state.UBP_check] = 'Poor'   // if temp >= 70 : Health = Poor
         }
-        else if (temp >= 30){
+        else if (temp >= 30) {
             newHealth[this.state.UBP_check] = 'Average'  // if temp >= 30 : Health = Average
         }
-        else{
+        else {
             newHealth[this.state.UBP_check] = 'Good'     // otherwise Health: Good
-        }     
-        this.setState({tempchecker: newTemp})
-        this.setState({Health: newHealth})   
+        }
+        this.setState({ tempchecker: newTemp })
+        this.setState({ Health: newHealth })
     }
 
     // Code that handles the actual rendering of objects created above.
@@ -169,52 +176,52 @@ export default class just extends Component {
         return (
 
             <View style={styles.container}>
-                
+                <ImageBackground source={img} style={styles.image}>
 
-                <Button
-                    title="Update Status"
-                    onPress={this.readStatusUpdate}  // update button
-                />
-                 <TouchableOpacity onPress={() => this.batteryGUI(0)} >
-                    <Image style={styles.batteryImage}      // changeable image
-                    source={this.state.battImage[0]}/> 
-                 </TouchableOpacity>
-                
-                <TouchableOpacity onPress={() => this.batteryGUI(1)}>
-                    <Image style={styles.batteryImage}      // second battery img
-                    source={this.state.battImage[1]} />                     
-                </TouchableOpacity>
+                    <Button
+                        title="Update Status"
+                        onPress={this.readStatusUpdate}  // update button
+                    />
+                    <TouchableOpacity onPress={() => this.batteryGUI(0)} >
+                        <Image style={styles.batteryImage}      // changeable image
+                            source={this.state.battImage[0]} />
+                    </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => this.batteryGUI(2)} >
-                    <Image style={styles.batteryImage}      // third battery img
-                    source={this.state.battImage[2]} />
-                </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.batteryGUI(1)}>
+                        <Image style={styles.batteryImage}      // second battery img
+                            source={this.state.battImage[1]} />
+                    </TouchableOpacity>
 
-                <StatusBar
-                    backgroundColor="#005661"
-                    barStyle="light-content"                // status bar
-                />
-                <StatusBar style="auto" />
-                
-                    
-                <TouchableHighlight style={styles.button}>   
-                    <Text style={styles.statusText}> UBP: {this.state.UBP_check + 1} </Text>
-                </TouchableHighlight>
+                    <TouchableOpacity onPress={() => this.batteryGUI(2)} >
+                        <Image style={styles.batteryImage}      // third battery img
+                            source={this.state.battImage[2]} />
+                    </TouchableOpacity>
 
-                <TouchableHighlight style={styles.button}>
-                    <Text style={styles.statusText}> Voltage: {this.state.Charge[this.state.UBP_check]} V </Text>
-                </TouchableHighlight>
-
-                <TouchableHighlight style={styles.button}>
-                    <Text style={styles.statusText}> Temperature: {this.state.tempchecker[this.state.UBP_check]}{'\u00b0'}C </Text>
-                </TouchableHighlight>
-
-                <TouchableHighlight style={styles.button}>
-                    <Text style={styles.statusText}> Health: {this.state.Health[this.state.UBP_check]}  </Text>
-                </TouchableHighlight> 
+                    <StatusBar
+                        backgroundColor="#005661"
+                        barStyle="light-content"                // status bar
+                    />
+                    <StatusBar style="auto" />
 
 
+                    <TouchableHighlight style={styles.button}>
+                        <Text style={styles.statusText}> UBP: {this.state.UBP_check + 1} </Text>
+                    </TouchableHighlight>
 
+                    <TouchableHighlight style={styles.button}>
+                        <Text style={styles.statusText}> Voltage: {this.state.Charge[this.state.UBP_check]} V </Text>
+                    </TouchableHighlight>
+
+                    <TouchableHighlight style={styles.button}>
+                        <Text style={styles.statusText}> Temperature: {this.state.tempchecker[this.state.UBP_check]}{'\u00b0'}C </Text>
+                    </TouchableHighlight>
+
+                    <TouchableHighlight style={styles.button}>
+                        <Text style={styles.statusText}> Health: {this.state.Health[this.state.UBP_check]}  </Text>
+                    </TouchableHighlight>
+
+
+                </ImageBackground>
 
 
             </View>
@@ -225,6 +232,20 @@ export default class just extends Component {
 
 }
 const styles = StyleSheet.create({
+    backgroundVideo: {
+        height: height,
+        position: "absolute",
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0
+    },
+    image: {
+        
+        resizeMode: "cover",
+        justifyContent: "center"
+    },
+
     container: {
         flex: 1,
         backgroundColor: '#00838e',
@@ -235,7 +256,7 @@ const styles = StyleSheet.create({
         width: 290,
         height: 120,
         left: 160,
-        bottom: 520,
+        bottom: 420,
         backgroundColor: '#ededed',
         borderRadius: 40,
         paddingHorizontal: 16,
@@ -256,7 +277,7 @@ const styles = StyleSheet.create({
     },
     batteryImage: {
         width: 90,
-        top: 40,
+        top: 130,
         left: 35,
         height: 180,
     },
