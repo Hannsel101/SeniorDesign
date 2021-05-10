@@ -132,12 +132,12 @@ export default class App extends Component {
           <Marker
             coordinate={{ latitude: 37.5630, longitude: -122.3255 }}
           >
-            <Image style={{ width: 20, height: 20 }} source={require('../assets/black_logo.png')} />
+            <Image style={{ width: 30, height: 30 }} source={require('../assets/Chargingstation.png')} />
           </Marker>
           <Marker
             coordinate={{ latitude: 36.7378, longitude: -119.3255 }}
           >
-            <Image style={{ width: 20, height: 20 }} source={require('../assets/black_logo.png')} />
+            <Image style={{ width: 30, height: 30 }} source={require('../assets/Chargingstation.png')} />
           </Marker>
 
           <Polyline coordinates={this.state.pointCoords}
