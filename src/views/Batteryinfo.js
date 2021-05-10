@@ -40,7 +40,7 @@ export default class just extends Component {
         UBP_check: 0,
         UBP_Selected: [false, false, false],
         UBP_Command: 48,
-        tempchecker: [0, 0, 0],
+        tempchecker: 0,
         check_alert: [false, false, false],
         UBPsActive: '0',
         totalVoltage: 0,
@@ -94,42 +94,45 @@ export default class just extends Component {
     //================================================================================================================
     // Update the UBP's tempature parameter
     updateTemperature = () => {
-        var newTemp = [...this.state.tempchecker];
 
         var newUpdates = global.statusUpdate;
         var splitVar = newUpdates.split(' ');
-        newTemp[this.state.UBP_check] = splitVar[2];
+        var newTemp = splitVar[4];
         this.setState({tempchecker: newTemp})
 
         const newHealth = [...this.state.Health]
 
-        if (splitVar[2] >= 32) {
-            newHealth[this.state.UBP_check] = 'Poor'   // if temp >= 70 : Health = Poor
+        if (splitVar[4] >= 32) {
+            newHealth[0] = 'Poor'   // if temp >= 70 : Health = Poor
         }
-        else if (splitVar[2] >= 29) {
-            newHealth[this.state.UBP_check] = 'Average'  // if temp >= 30 : Health = Average
+        else if (splitVar[4] >= 29) {
+            newHealth[0] = 'Average'  // if temp >= 30 : Health = Average
         }
         else {
-            newHealth[this.state.UBP_check] = 'Optimal'     // otherwise Health: Good
+            newHealth[0] = 'Optimal'     // otherwise Health: Good
         }
+
+        newHealth[1] = newHealth[0];
+        newHealth[2] = newHealth[1];
         this.setState({ Health: newHealth })
 
 
-        this.updateVoltage(splitVar[0], splitVar[1]);
+        this.updateVoltage(splitVar[0], splitVar[1], splitVar[2], splitVar[3]);
     }
     //----------------------------------------------------------------------------------------------------------------
     // Update the UBP's voltage paremeter
-    updateVoltage = (totalVolt, voltUBP1) => {
+    updateVoltage = (totalVolt, voltUBP1, voltUBP2, voltUBP3) => {
 
         // Update the total voltage output by the system
         this.setState({totalVoltage: totalVolt});
 
         // Update the individual UBP voltages and images
-        this.updateUBPVolt(voltUBP1, 0);
+        this.updateUBPVolt(voltUBP1, voltUBP2, voltUBP3);
+        
     }
     //----------------------------------------------------------------------------------------------------------------
     // Updates the battery image based on charge remaining of the individual UBPs
-    updateUBPVolt = (UBP_volt, UBP_num) => {
+    updateUBPVolt = (UBP_volt1, UBP_volt2, UBP_volt3) => {
         
         // Store the current state of each charge into a mutable variable
         var newVolt = [...this.state.Charge]
@@ -137,22 +140,97 @@ export default class just extends Component {
         // Update the battery image of the chosen battery to view
         const newImage = [...this.state.battImage];
 
-        if (Number(UBP_volt) >= 3.50) {
-            newImage[UBP_num] = images.batteryimage.green;
+        if (Number(UBP_volt1) >= 3.50) {
+            newImage[0] = images.batteryimage.green;
         }
-        else if (Number(UBP_volt) >= 3.45) {
-            newImage[UBP_num] = images.batteryimage.yellow;
+        else if (Number(UBP_volt1) >= 3.00) {
+            newImage[0] = images.batteryimage.yellow;
         }
-        else if (Number(UBP_volt) >= 3.20) {
-            newImage[UBP_num] = images.batteryimage.red;
+        else if (Number(UBP_volt1) >= 2.78) {
+            newImage[0] = images.batteryimage.red;
         }
         else {
-            newImage[UBP_num] = images.batteryimage.dead;
+            newImage[0] = images.batteryimage.dead;
 
             const newalert = [...this.state.check_alert];
-            if (!newalert[UBP_num]) {
+            if (!newalert[0]) {
                 // Update the alert array so that the message isnt displayed more than once
-                newalert[UBP_num] = true;
+                newalert[0] = true;
+                this.setState({ check_alert: newalert })
+
+                // Display an alert to the user with the option to go directly to the navigation
+                // page or to stay on the current page
+                Alert.alert(
+                    'Warning',
+                    'Please stop by a battery swapping station immediately',
+                    [
+                        {
+                            text: 'Find Swapping Station',
+                            onPress: () => { Actions.location() }
+                        },
+                        {
+                            text: 'OK',
+                        }
+                    ]
+                )
+            }
+        }
+
+
+        // Update ubp2 image
+        if (Number(UBP_volt2) >= 3.50) {
+            newImage[1] = images.batteryimage.green;
+        }
+        else if (Number(UBP_volt2) >= 3.00) {
+            newImage[1] = images.batteryimage.yellow;
+        }
+        else if (Number(UBP_volt2) >= 2.5) {
+            newImage[1] = images.batteryimage.red;
+        }
+        else {
+            newImage[1] = images.batteryimage.dead;
+
+            const newalert = [...this.state.check_alert];
+            if (!newalert[1]) {
+                // Update the alert array so that the message isnt displayed more than once
+                newalert[1] = true;
+                this.setState({ check_alert: newalert })
+
+                // Display an alert to the user with the option to go directly to the navigation
+                // page or to stay on the current page
+                Alert.alert(
+                    'Warning',
+                    'Please stop by a battery swapping station immediately',
+                    [
+                        {
+                            text: 'Find Swapping Station',
+                            onPress: () => { Actions.location() }
+                        },
+                        {
+                            text: 'OK',
+                        }
+                    ]
+                )
+            }
+        }
+
+        // update UBP3 image
+        if (Number(UBP_volt3) >= 3.50) {
+            newImage[2] = images.batteryimage.green;
+        }
+        else if (Number(UBP_volt3) >= 3.00) {
+            newImage[2] = images.batteryimage.yellow;
+        }
+        else if (Number(UBP_volt3) >= 2.78) {
+            newImage[2] = images.batteryimage.red;
+        }
+        else {
+            newImage[2] = images.batteryimage.dead;
+
+            const newalert = [...this.state.check_alert];
+            if (!newalert[2]) {
+                // Update the alert array so that the message isnt displayed more than once
+                newalert[2] = true;
                 this.setState({ check_alert: newalert })
 
                 // Display an alert to the user with the option to go directly to the navigation
@@ -175,7 +253,9 @@ export default class just extends Component {
         this.setState({ battImage: newImage })
 
 
-        newVolt[UBP_num] = UBP_volt;
+        newVolt[0] = UBP_volt1;
+        newVolt[1] = UBP_volt2;
+        newVolt[2] = UBP_volt3;
         this.setState({Charge: newVolt});
     }
 //================================================================================================================
@@ -223,7 +303,7 @@ export default class just extends Component {
                     </TouchableHighlight>
 
                     <TouchableHighlight style={styles.button}>
-                        <Text style={styles.statusText}> Temperature: {this.state.tempchecker[this.state.UBP_check]}{'\u00b0'}C </Text>
+                        <Text style={styles.statusText}> Temperature: {this.state.tempchecker}{'\u00b0'}C </Text>
                     </TouchableHighlight>
 
                     <TouchableHighlight style={styles.button}>
