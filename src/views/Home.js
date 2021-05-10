@@ -6,9 +6,6 @@ import Video from "react-native-video";
 
 const { width, height } = Dimensions.get("window");
 const Home = () => {
-    const goToBluetooth = () => {
-        Actions.bluetooth()
-    }
     const goToLocation = () => {
         Actions.location()
     }
@@ -40,7 +37,7 @@ const Home = () => {
           ignoreSilentSwitch={"obey"}
         />
             <StatusBar
-                backgroundColor="#005661"
+                backgroundColor="#000000"
                 barStyle="light-content"
             />
             <StatusBar style="auto" />
@@ -49,9 +46,6 @@ const Home = () => {
             source ={require('../assets/white_logo.png')}
              />
              
-             <TouchableOpacity style={styles.button} onPress={goToBluetooth}>
-                <Text style={styles.buttonText}> Bluetooth </Text>
-            </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={goToLogin}>
                 <Text style={styles.buttonText}> Login </Text>
             </TouchableOpacity>

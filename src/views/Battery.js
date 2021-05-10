@@ -11,11 +11,9 @@ const Battery = () => {
   const goToLocation = () => {
     Actions.location()
   }
-  const goToSearchBar = () => {
-    Actions.searchbar()
-  }
   const goToBatteryinfo = () => {
-    Actions.batteryinfo()
+    if (global.connected){Actions.batteryinfo()}
+    else{Actions.bluetooth()}
   }
   return (
     <View style={styles.container}>
@@ -29,17 +27,12 @@ const Battery = () => {
         ignoreSilentSwitch={"obey"}
       />
       <StatusBar
-        backgroundColor="#005661"
+        backgroundColor="#000000"
         barStyle="light-content"
       />
-      <Image style={{ width: 150, height: 150, justifyContent: 'center', alignItems: 'center' }}
+      <Image style={{ width: 220, height: 150, justifyContent: 'center', alignItems: 'center' }}
         source={require('../assets/batterhistory.png')}
       />
-
-      <TouchableOpacity style={styles.button}>
-        <Text style={{ color: 'black', textAlign: 'center', fontSize: 20, fontWeight: 'bold' }}> Switch Battery! </Text>
-      </TouchableOpacity>
-
       <TouchableOpacity style={styles.button} onPress={goToLocation}>
         <Text style={{ color: 'black', textAlign: 'center', fontSize: 20, fontWeight: 'bold' }}> Look for BSS near me! </Text>
       </TouchableOpacity>

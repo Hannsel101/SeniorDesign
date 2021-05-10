@@ -23,6 +23,7 @@ global.statusChar = '5ae13f53-46ad-4fce-a27b-03ffe6ad9d75';
 global.commandChar = '24a2a282-5fd5-4262-8490-a465ab0d9413';
 global.statusUpdate = "";
 global.readDone = false;
+global.connected = false;
 
 // BLE setup constants
 const BleManagerModule = NativeModules.BleManager;
@@ -140,6 +141,7 @@ function BluetoothList(props)
             global.MAC = macAddress;
             console.log("Connected to " + global.MAC)
             
+            
 
             // Retrieve the services available
             BleManager.retrieveServices(macAddress)
@@ -152,6 +154,7 @@ function BluetoothList(props)
                 readBLE();
 
                 // Change screens
+                global.connected= true
                 Actions.batteryinfo()
 
             });

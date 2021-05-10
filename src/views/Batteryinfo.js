@@ -208,7 +208,7 @@ export default class just extends Component {
                     </TouchableOpacity>
 
                     <StatusBar
-                        backgroundColor="#005661"
+                        backgroundColor="#000000"
                         barStyle="light-content"                // status bar
                     />
                     <StatusBar style="auto" />
