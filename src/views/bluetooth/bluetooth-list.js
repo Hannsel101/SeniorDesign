@@ -148,6 +148,10 @@ function BluetoothList(props)
                 console.log("Service UUID: ", peripheralInfo.services[2])
                 global.serviceID = peripheralInfo.services[2].uuid;           
 
+                // Retrieve the initial data from the microcontroller
+                readBLE();
+
+                // Change screens
                 Actions.batteryinfo()
 
             });

@@ -203,10 +203,12 @@ void BLE_Server::configAdvertising()
   //pAdvertising->setMinPreferred(0x12);
 }
 //---------------------------------------------------------------------------------//
-void BLE_Server::sendUpdate(String updateCharge, String updateTemp)
+void BLE_Server::sendUpdate(String updateCharge, String updateUBP1, String updateTemp)
 {
-  char update[15];
+  char update[20];
   int i=0;
+
+  // Push the total voltage into the update character array
   for(; i<=updateCharge.length(); ++i)
   {
     if(i == updateCharge.length())
@@ -215,7 +217,17 @@ void BLE_Server::sendUpdate(String updateCharge, String updateTemp)
       update[i] = updateCharge[i];
   }
 
-  for(int k=0; k<updateTemp.length(); ++i, ++k)
+  // Push the voltage for UBP1 into the update character array
+  for(int k=0; k<=updateUBP1.length(); ++i, ++k)
+  {
+    if(k == updateUBP1.length())
+      update[i] = ' ';
+    else
+      update[i] = updateUBP1[k];
+  }
+
+  // Push the temperature readings for the system into the update array
+  for(int k=0; k<=updateTemp.length(); ++i, ++k)
   {
     if(k == updateTemp.length())
       update[i] = '\0';

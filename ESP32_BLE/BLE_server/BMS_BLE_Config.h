@@ -16,9 +16,10 @@
 
 // Sensor Pins
 #define TEMP 17
-#define VOLT 38
-#define CURR 38
-#define BATS 39
+#define VOLT 36
+#define VOLT_UBP1 37
+//#define CURR 38
+//#define BATS 39
 
 class BLE_Server
 {
@@ -57,7 +58,7 @@ class BLE_Server
     /*
      * Function to manually send a UBP update from the server without the client requesting the update
      */
-     void sendUpdate(String updateCharge, String updateTemp);
+     void sendUpdate(String updateCharge, String updateUBP1, String updateTemp);
 
     private:
       BLEServer *pServer;

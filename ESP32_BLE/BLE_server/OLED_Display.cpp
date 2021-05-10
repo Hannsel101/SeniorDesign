@@ -51,8 +51,8 @@ void drawSensorReadings(uint8_t health, float charge, float temperature)
   // Convert the status of charge from unsigned integer to string format
   // then add "Charge: " and the status of charge to the display buffer
   String chargeS = String(charge);
-  Heltec.display->drawString(3, 30, "Charge: ");
-  Heltec.display->drawString(43, 30, String(chargeS + "%"));
+  Heltec.display->drawString(3, 30, "Voltage: ");//"Charge: ");
+  Heltec.display->drawString(43, 30, String(chargeS + " V"));//"%"));
 
   // Convert the temperature from unsigned integer to string format
   // then add "Temperature: " and the temperature to the display buffer

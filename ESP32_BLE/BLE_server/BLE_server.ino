@@ -39,6 +39,7 @@ void setup() {
 
   // Set the number of bits used for ADC conversions
   adcAttachPin(VOLT);
+  adcAttachPin(VOLT_UBP1);
   analogReadResolution(12);
 }
 
@@ -53,15 +54,10 @@ void loop() {
   float t = dht.readTemperature();
   delay(50);
 
-  //Serial.print("\nHumidity: ");
-  //Serial.println(h);
-  //Serial.print("Temperature: ");
-  //Serial.println(t);
-
-  double inputVolt = ReadVoltage(38);
-  inputVolt = inputVolt*11.18;
-  //Serial.print("Voltage: ");
-  //Serial.println(inputVolt);
+  double inputVolt = ReadVoltage(VOLT)*11.18;
+  //inputVolt = inputVolt*11.18;
+  delay(10);
+  double inputUBP1 = ReadVoltage(VOLT_UBP1)*11.18;
 
   
   // If connected to a central device then begin transmitting sensor data periodically and 
@@ -72,21 +68,21 @@ void loop() {
       drawConnected(); 
       drawSensorReadings(5, inputVolt, t);
       String testTemp = String(t);
-      String testCharge;
+      String totalVoltage;
+      String UBP1Voltage;
+      String UBP2Voltage;
+      String UBP3Voltage;
 
-      // Add a leading 0 for voltages under 10 volts
-      if(inputVolt < 10)
-        testCharge = "0" + String(inputVolt);
-      else
-        testCharge = String(inputVolt);
-      
+      totalVoltage = stringifyVolt(inputVolt);
+      UBP1Voltage = stringifyVolt(inputUBP1);
+
       // Add a leading 0 for tempature readings under 10 degrees celcius
       if(t < 10)
         testTemp = "0" + String(t);
       else
         testTemp = String(t);
 
-      BMS_BLE.sendUpdate(testCharge, testTemp);
+      BMS_BLE.sendUpdate(totalVoltage, UBP1Voltage, testTemp);
   }
   else
   {
@@ -97,9 +93,18 @@ void loop() {
 }
 
 
-
+// Polynomial conversion function to reduce percentage of error produced by the ESP32 Internal ADC
 double ReadVoltage(byte pin){
   double reading = analogRead(pin); // Reference voltage is 3v3 so maximum reading is 3v3 = 4095 in range 0 to 4095
   if(reading < 1 || reading > 4095) return 0;
   return -0.000000000000016 * pow(reading,4) + 0.000000000118171 * pow(reading,3)- 0.000000301211691 * pow(reading,2)+ 0.001109019271794 * reading + 0.034143524634089;
-} // Added an improved polynomial, use either, comment out as required
+}
+
+// Stringify the input voltages and add a leading 0 for voltages under 10 volts
+String stringifyVolt(double inputVolt){
+  // Add a leading 0 for voltages under 10 volts
+  if(inputVolt < 10)
+    return ("0" + String(inputVolt));
+  else
+    return String(inputVolt);
+}
