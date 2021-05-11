@@ -26,7 +26,7 @@ const Routes = () => (
             <Scene key="history" component={History} title="History"/>
             <Scene key="signup" component={Signup} title="Signup"/>
             <Scene key="battery" component={Battery} title="Battery" />
-            <Scene key="Login" component={Login} title="Login" />
+            <Scene key="Login" component={Login} title="Login" initial={true}/>
             <Scene key="about" component={About} title="About" />
             <Scene key="test" component={Test} title="Test" />
             <Scene key="batteryinfo" component={Batteryinfo} title="Batteryinfo"   />
