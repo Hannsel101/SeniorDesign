@@ -146,7 +146,7 @@ export default class just extends Component {
         else if (Number(UBP_volt1) >= 3.00) {
             newImage[0] = images.batteryimage.yellow;
         }
-        else if (Number(UBP_volt1) >= 2.78) {
+        else if (Number(UBP_volt1) >= 2.4) {
             newImage[0] = images.batteryimage.red;
         }
         else {
@@ -184,7 +184,7 @@ export default class just extends Component {
         else if (Number(UBP_volt2) >= 3.00) {
             newImage[1] = images.batteryimage.yellow;
         }
-        else if (Number(UBP_volt2) >= 2.5) {
+        else if (Number(UBP_volt2) >= 2.4) {
             newImage[1] = images.batteryimage.red;
         }
         else {
@@ -221,7 +221,7 @@ export default class just extends Component {
         else if (Number(UBP_volt3) >= 3.00) {
             newImage[2] = images.batteryimage.yellow;
         }
-        else if (Number(UBP_volt3) >= 2.78) {
+        else if (Number(UBP_volt3) >= 2.4) {
             newImage[2] = images.batteryimage.red;
         }
         else {
@@ -332,9 +332,9 @@ const styles = StyleSheet.create({
 
     button: {
         width: 290,
-        height: 120,
-        left: 160,
-        bottom: 530,
+        height: 96,
+        left: 145,
+        bottom: 440,
         backgroundColor: '#ededed',
         borderRadius: 40,
         paddingHorizontal: 16,
@@ -354,8 +354,8 @@ const styles = StyleSheet.create({
     batteryImage: {
         width: 90,
         top: 30,
-        left: 35,
-        height: 180,
+        left: 33,
+        height: 150,
     },
     scrollView: {
         flex: 1,
