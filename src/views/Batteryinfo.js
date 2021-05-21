@@ -184,7 +184,7 @@ export default class just extends Component {
         else if (Number(UBP_volt2) >= 3.00) {
             newImage[1] = images.batteryimage.yellow;
         }
-        else if (Number(UBP_volt2) >= 2.5) {
+        else if (Number(UBP_volt2) >= 2.0) {
             newImage[1] = images.batteryimage.red;
         }
         else {

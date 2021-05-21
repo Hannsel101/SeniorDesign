@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
   },
   inputBox: {
     width: 200,
-    height: 35,
+    height: 45,
     backgroundColor: '#ededed',
     borderRadius: 40,
     paddingHorizontal: 16,
